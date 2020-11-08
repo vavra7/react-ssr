@@ -4,7 +4,7 @@ const webpackNodeExternals = require('webpack-node-externals');
 const clientConfig = {
   entry: './src/client/index.js',
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist/chunks'),
     filename: 'index.js'
   },
   module: {
@@ -21,6 +21,7 @@ const clientConfig = {
 };
 
 const serverConfig = {
+  target: 'node',
   entry: './src/server/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
