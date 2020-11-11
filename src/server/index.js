@@ -9,11 +9,31 @@ const port = 4000;
 const baseurl = `http://localhost:${port}`;
 const app = express();
 
-app.get('/', (req, res) => {
-  const reactApp = renderToString(<App />);
-  const htmlTemplate = fs.readFileSync(path.resolve('./public/index.html'), 'utf-8');
+function fakeFetch() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve([
+        {
+          id: 1,
+          text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa, deserunt.'
+        },
+        {
+          id: 2,
+          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, odit.'
+        }
+      ]);
+    }, 1000);
+  });
+}
 
-  res.send(htmlTemplate.replace('<div id="root"></div>', `<div id="root">${reactApp}</div>`));
+app.use(express.static('dist'));
+
+app.get('/', (req, res) => {
+  const htmlTemplate = fs.readFileSync(path.resolve('./public/index.html'), 'utf-8');
+  fakeFetch().then(initialData => {
+    const reactApp = renderToString(<App initialData={initialData} />);
+    res.send(htmlTemplate.replace('<div id="root"></div>', `<div id="root">${reactApp}</div>`));
+  });
 });
 
 app.listen(port, () => console.log(`ready - started server on ${baseurl}`));

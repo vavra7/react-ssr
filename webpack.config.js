@@ -1,5 +1,5 @@
 const path = require('path');
-const webpackNodeExternals = require('webpack-node-externals');
+const nodeExternals = require('webpack-node-externals');
 
 const clientConfig = {
   entry: './src/client/index.js',
@@ -27,7 +27,7 @@ const serverConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js'
   },
-  externals: [webpackNodeExternals()],
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
