@@ -6,10 +6,10 @@ const client = {
   target: 'web',
   devtool: 'eval-cheap-source-map',
   entry: {
-    main: path.resolve(__dirname, 'src/index.ts')
+    main: path.resolve(__dirname, 'src/index.tsx')
   },
   output: {
-    publicPath: './',
+    publicPath: '/',
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
@@ -22,11 +22,21 @@ const client = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    modules: ['src', 'node_modules']
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/index.html')
     })
-  ]
+  ],
+  devServer: {
+    host: 'localhost',
+    port: 4000,
+    historyApiFallback: true,
+    open: false
+  }
 };
 
 module.exports = [client];
