@@ -1,12 +1,13 @@
+import { RouterView } from '@react-ssr/router';
 import React, { FC } from 'react';
-import Layout from './components/Layout';
-import Test1 from './views/Test1';
+import { routes } from './router/routes';
 
 const App: FC = () => {
   return (
-    <Layout>
-      <Test1 />
-    </Layout>
+    <>
+      <div>global alerts</div>
+      <RouterView routesConfig={routes} />
+    </>
   );
 };
 

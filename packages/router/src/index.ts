@@ -1,3 +1,2 @@
-export type MyText = string;
-
-export const myText: MyText = 'some my text';
+export * from './components';
+export * from './types';
