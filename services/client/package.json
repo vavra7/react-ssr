@@ -1,0 +1,21 @@
+{
+  "name": "@react-ssr/client",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "compiler start",
+    "build": "compiler build",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'"
+  },
+  "dependencies": {
+    "@react-ssr/compiler": "1.0.0",
+    "@react-ssr/router": "1.0.0",
+    "express": "^4.17.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0"
+  }
+}
