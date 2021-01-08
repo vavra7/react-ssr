@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-
 import { Command } from 'commander';
+import 'reflect-metadata';
 import { build, start } from './scripts';
 
 const program = new Command();

@@ -1,5 +1,6 @@
 {
   "name": "@react-ssr/compiler",
+  "license": "MIT",
   "version": "1.0.0",
   "main": "lib/index.js",
   "bin": {
@@ -7,13 +8,26 @@
   },
   "scripts": {
     "start": "tsc --watch",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "commander": "^6.2.1",
-    "webpack": "^5.11.1"
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^8.0.14",
+    "typedi": "^0.8.0",
+    "webpack": "^5.11.1",
+    "webpack-manifest-plugin": "^3.0.0",
+    "webpack-node-externals": "^2.5.2"
   },
   "devDependencies": {
-    "@types/commander": "^2.12.2"
+    "@types/chalk": "^2.2.0",
+    "@types/commander": "^2.12.2",
+    "@types/rimraf": "^3.0.0",
+    "@types/webpack": "^4.41.25",
+    "@types/webpack-manifest-plugin": "^3.0.2",
+    "@types/webpack-node-externals": "^2.5.0"
   }
 }
