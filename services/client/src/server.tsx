@@ -1,32 +1,37 @@
 import express, { Application } from 'express';
-import ReactDOMServer from 'react-dom/server';
-import React from 'react';
-import { config } from './config';
 import fs from 'fs';
 import path from 'path';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
 import App from './App';
+import HtmlBoilerplate from './components/HtmlBoilerplate';
+import { config } from './config';
 
 class ServerApp {
   private app: Application;
-  private htmlTemplate: string;
+  private manifest: Record<string, string>;
 
   constructor() {
     this.app = express();
-    this.htmlTemplate = fs.readFileSync(path.resolve(__dirname, 'static/index.html'), 'utf-8');
+    this.manifest = JSON.parse(
+      fs.readFileSync(path.resolve(__dirname, 'static/manifest.json'), 'utf-8')
+    );
   }
 
   private beforeRoutesInit(): void {
-    this.app.use(express.static('dist/static'));
+    this.app.use('/static', express.static('dist/static'));
   }
 
   private routesInit(): void {
     this.app.get('*', async (req, res) => {
-      const reactAppString = ReactDOMServer.renderToString(<App />);
-      const staticPage = this.htmlTemplate.replace(
-        '<div id="root"></div>',
-        `<div id="root">${reactAppString}</div>`
+      res.send(
+        '<!DOCTYPE html>' +
+          renderToString(
+            <HtmlBoilerplate scripts={[this.manifest['bundle.js']]}>
+              <App />
+            </HtmlBoilerplate>
+          )
       );
-      res.send(staticPage);
     });
   }
 
