@@ -2,11 +2,11 @@ import path from 'path';
 import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 
-export const serverProdConfig: Configuration = {
+export const serverDevConfig: Configuration = {
   name: 'server',
-  mode: 'production',
+  mode: 'development',
   target: 'node',
-  devtool: false,
+  devtool: 'eval-cheap-source-map',
   entry: {
     server: path.resolve(process.cwd(), 'src/server.tsx')
   },

@@ -1,60 +1,32 @@
-import path from 'path';
-import rimraf from 'rimraf';
-import { Container, Inject } from 'typedi';
-import { Compiler, Configuration, MultiCompiler, webpack } from 'webpack';
-import { Log } from '../services';
+import { Container } from 'typedi';
+import { CompileBase } from '../services';
 import { BindThis } from '../utils';
 import { clientProdConfig, serverProdConfig } from '../webpack';
 
-class Build {
-  private clientProdConfig: Configuration = clientProdConfig;
-  private serverProdConfig: Configuration = serverProdConfig;
-  private multiCompiler: MultiCompiler;
-  private clientName: string;
-  private serverName: string;
-
-  @Inject()
-  private log: Log;
-
+class Build extends CompileBase {
   constructor() {
-    this.multiCompiler = webpack([this.clientProdConfig, this.serverProdConfig]);
-    this.clientName = this.clientProdConfig.name || 'client';
-    this.serverName = this.serverProdConfig.name || 'server';
-    rimraf.sync(path.resolve(process.cwd(), 'dist'));
-  }
-
-  get clientCompiler(): Compiler {
-    return this.multiCompiler.compilers.find(compiler => compiler.name === this.clientName);
-  }
-
-  get serverCompiler(): Compiler {
-    return this.multiCompiler.compilers.find(compiler => compiler.name === this.serverName);
-  }
-
-  private addLogs(name: string, compiler: Compiler): void {
-    compiler.hooks.compile.tap(name, () => {
-      console.log(`[${name}] COMPILING...`);
-    });
-    compiler.hooks.done.tap(name, stats => {
-      if (stats.hasErrors()) {
-        console.log(`[${name}] ERROR`);
-      } else {
-        console.log(`[${name}] DONE`);
-      }
-    });
+    super(clientProdConfig, serverProdConfig);
   }
 
   @BindThis()
   public run(): void {
+    this.createMultiCompiler();
     this.addLogs(this.clientName, this.clientCompiler);
     this.addLogs(this.serverName, this.serverCompiler);
     this.multiCompiler.run((err, stats) => {
-      if (err) {
-        console.error(err);
-      }
-      if (stats.hasErrors()) {
-        stats.toJson().errors.forEach(error => this.log.error(error.message));
+      const _stats = stats?.toJson();
+      if (err?.stack) {
+        this.log.error(err.stack);
         this.log.doneError();
+      } else if (stats?.hasErrors() && _stats?.errors) {
+        _stats.errors.forEach(error => {
+          if (typeof error === 'string') this.log.error(error);
+          else if (typeof error === 'object') this.log.error(error.stack || error.message);
+        });
+        this.log.doneError();
+      } else if (stats?.hasWarnings() && _stats?.warnings) {
+        _stats.warnings.forEach(warning => this.log.warn(warning.stack));
+        this.log.doneWarning();
       } else {
         this.log.doneSuccess();
       }

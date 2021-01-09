@@ -16,8 +16,8 @@ const HtmlBoilerplate: FC<HtmlBoilerplateProps> = ({ children, scripts }) => {
         </head>
         <body>
           <div id="root">{children}</div>
-          {scripts.map(src => (
-            <script src={src} defer />
+          {scripts.map((src, index) => (
+            <script key={index} src={src} defer />
           ))}
         </body>
       </html>
