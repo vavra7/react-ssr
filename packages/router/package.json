@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
+    "start": "tsc --watch",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
   "dependencies": {},

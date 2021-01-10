@@ -8,3 +8,9 @@ ReactDOM.hydrate(
   </StrictMode>,
   document.getElementById('root')
 );
+
+// @ts-ignore
+if (module.hot) {
+  // @ts-ignore
+  module.hot.accept();
+}

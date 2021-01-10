@@ -1,6 +1,7 @@
 import path from 'path';
 import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
+import { WEBPACK_BASE_URL } from '../config';
 
 export const serverDevConfig: Configuration = {
   name: 'server',
@@ -12,7 +13,8 @@ export const serverDevConfig: Configuration = {
   },
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: 'index.js'
+    filename: 'index.js',
+    publicPath: `${WEBPACK_BASE_URL}/static/`
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
   module: {

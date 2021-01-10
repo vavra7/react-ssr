@@ -70,24 +70,29 @@ class Start extends CompileBase {
     this.addLogs(this.clientName, this.clientCompiler);
     this.addLogs(this.serverName, this.serverCompiler);
 
-    this.webpackServer.createServer();
+    this.webpackServer.createApp();
     this.webpackServer.runWebpackMiddleware(this.clientConfig, this.clientCompiler);
 
     const compilationPromises = this.createCompilationPromises();
 
-    this.serverCompiler.watch({ ignored: /node_modules/ }, (err, stats) => {
-      const _stats = stats?.toJson();
-      if (err?.stack) {
-        this.log.error(err.stack);
-      } else if (stats?.hasErrors() && _stats?.errors) {
-        _stats.errors.forEach(error => {
-          if (typeof error === 'string') this.log.error(error);
-          else if (typeof error === 'object') this.log.error(error.stack || error.message);
-        });
-      } else if (stats?.hasWarnings() && _stats?.warnings) {
-        _stats.warnings.forEach(warning => this.log.warn(warning.stack));
+    this.serverCompiler.watch(
+      {
+        ignored: /node_modules/
+      },
+      (err, stats) => {
+        const _stats = stats?.toJson();
+        if (err?.stack) {
+          this.log.error(err.stack);
+        } else if (stats?.hasErrors() && _stats?.errors) {
+          _stats.errors.forEach(error => {
+            if (typeof error === 'string') this.log.error(error);
+            else if (typeof error === 'object') this.log.error(error.stack || error.message);
+          });
+        } else if (stats?.hasWarnings() && _stats?.warnings) {
+          _stats.warnings.forEach(warning => this.log.warn(warning.stack));
+        }
       }
-    });
+    );
 
     await Promise.all(compilationPromises);
 

@@ -1,6 +1,7 @@
 import path from 'path';
 import { Configuration, HotModuleReplacementPlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+import { WEBPACK_BASE_URL } from '../config';
 
 export const clientDevConfig: Configuration = {
   name: 'client',
@@ -8,12 +9,17 @@ export const clientDevConfig: Configuration = {
   target: 'web',
   devtool: 'eval-cheap-source-map',
   entry: {
-    bundle: [path.resolve(process.cwd(), 'src/client.tsx')]
+    bundle: [
+      `webpack-hot-middleware/client?path=${WEBPACK_BASE_URL}/__webpack_hmr`,
+      path.resolve(process.cwd(), 'src/client.tsx')
+    ]
   },
   output: {
     path: path.resolve(process.cwd(), 'dist/static'),
-    filename: '[name].[contenthash].js',
-    publicPath: '/static/'
+    filename: '[name].js',
+    publicPath: `${WEBPACK_BASE_URL}/static/`,
+    hotUpdateMainFilename: 'updates/[hash].hot-update.json',
+    hotUpdateChunkFilename: 'updates/[id].[hash].hot-update.js'
   },
   module: {
     rules: [

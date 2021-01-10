@@ -17,7 +17,7 @@ export class WebpackServer {
     return this._app;
   }
 
-  public createServer(): void {
+  public createApp(): void {
     this._app = express();
     this._app.use((_, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
