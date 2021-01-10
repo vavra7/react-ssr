@@ -4,7 +4,7 @@ import { Service } from 'typedi';
 export type LogType = 'success' | 'error' | 'warning';
 
 @Service()
-export class Log {
+export class StyledLog {
   public doneSuccess(message: ` ${string} ` = ' Success '): void {
     console.log('');
     console.log(chalk.bgGreen.gray.bold(message));

@@ -1,7 +1,7 @@
 import path from 'path';
-import { Configuration, HotModuleReplacementPlugin } from 'webpack';
+import { Configuration, DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
-import { WEBPACK_BASE_URL } from '../config';
+import { WEBPACK_HOST, WEBPACK_PORT } from '../config';
 
 export const clientDevConfig: Configuration = {
   name: 'client',
@@ -10,16 +10,16 @@ export const clientDevConfig: Configuration = {
   devtool: 'eval-cheap-source-map',
   entry: {
     bundle: [
-      `webpack-hot-middleware/client?path=${WEBPACK_BASE_URL}/__webpack_hmr`,
+      `webpack-hot-middleware/client?path=${WEBPACK_HOST}:${WEBPACK_PORT}/__webpack_hmr`,
       path.resolve(process.cwd(), 'src/client.tsx')
     ]
   },
   output: {
     path: path.resolve(process.cwd(), 'dist/static'),
     filename: '[name].js',
-    publicPath: `${WEBPACK_BASE_URL}/static/`,
-    hotUpdateMainFilename: 'updates/[hash].hot-update.json',
-    hotUpdateChunkFilename: 'updates/[id].[hash].hot-update.js'
+    publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}/static/`,
+    hotUpdateMainFilename: 'updates/[fullhash].hot-update.json',
+    hotUpdateChunkFilename: 'updates/[id].[fullhash].hot-update.js'
   },
   module: {
     rules: [
@@ -36,7 +36,11 @@ export const clientDevConfig: Configuration = {
   },
   plugins: [
     new HotModuleReplacementPlugin(),
-    new WebpackManifestPlugin({ fileName: 'manifest.json' })
+    new WebpackManifestPlugin({ fileName: 'manifest.json' }),
+    new DefinePlugin({
+      __SERVER__: false,
+      __BROWSER__: true
+    })
   ],
   stats: {
     cached: false,
@@ -50,5 +54,8 @@ export const clientDevConfig: Configuration = {
     reasons: false,
     timings: false,
     version: false
+  },
+  performance: {
+    hints: false
   }
 };

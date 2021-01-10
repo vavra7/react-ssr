@@ -6,9 +6,14 @@ const App: FC = () => {
   return (
     <>
       <div>global alerts</div>
+      {__SERVER__.toString()}
       <RouterView routesConfig={routes} />
     </>
   );
 };
 
 export default App;
+
+if (module.hot) {
+  module.hot.accept();
+}

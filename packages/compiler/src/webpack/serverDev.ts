@@ -1,7 +1,7 @@
 import path from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import { WEBPACK_BASE_URL } from '../config';
+import { WEBPACK_HOST, WEBPACK_PORT } from '../config';
 
 export const serverDevConfig: Configuration = {
   name: 'server',
@@ -14,7 +14,7 @@ export const serverDevConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist'),
     filename: 'index.js',
-    publicPath: `${WEBPACK_BASE_URL}/static/`
+    publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}}/static/`
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
   module: {
@@ -29,5 +29,11 @@ export const serverDevConfig: Configuration = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     modules: ['src', 'node_modules']
-  }
+  },
+  plugins: [
+    new DefinePlugin({
+      __SERVER__: true,
+      __BROWSER__: false
+    })
+  ]
 };

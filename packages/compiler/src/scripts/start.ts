@@ -1,13 +1,16 @@
 import nodemon from 'nodemon';
 import path from 'path';
 import Container, { Inject } from 'typedi';
-import { CompileBase, WebpackServer } from '../services';
+import { CompileBase, StyledLog, WebpackServer } from '../services';
 import { BindThis } from '../utils';
 import { clientDevConfig, serverDevConfig } from '../webpack';
 
 class Start extends CompileBase {
   @Inject()
   private webpackServer: WebpackServer;
+
+  @Inject()
+  protected styledLog: StyledLog;
 
   constructor() {
     super(clientDevConfig, serverDevConfig);
@@ -45,7 +48,8 @@ class Start extends CompileBase {
   private startNodemon(): void {
     const script = nodemon({
       script: path.resolve(process.cwd(), 'dist/index.js'),
-      watch: [path.resolve(process.cwd(), 'dist/index.js')]
+      watch: [path.resolve(process.cwd(), 'dist/index.js')],
+      delay: 200
     });
     script.on('restart', () => {
       console.log('Server side app has been restarted.');
@@ -66,15 +70,9 @@ class Start extends CompileBase {
   public async run(): Promise<void> {
     this.clearDistFolder();
     this.createMultiCompiler();
-
-    this.addLogs(this.clientName, this.clientCompiler);
-    this.addLogs(this.serverName, this.serverCompiler);
-
+    const compilationPromises = this.createCompilationPromises();
     this.webpackServer.createApp();
     this.webpackServer.runWebpackMiddleware(this.clientConfig, this.clientCompiler);
-
-    const compilationPromises = this.createCompilationPromises();
-
     this.serverCompiler.watch(
       {
         ignored: /node_modules/
@@ -82,20 +80,18 @@ class Start extends CompileBase {
       (err, stats) => {
         const _stats = stats?.toJson();
         if (err?.stack) {
-          this.log.error(err.stack);
+          this.styledLog.error(err.stack);
         } else if (stats?.hasErrors() && _stats?.errors) {
           _stats.errors.forEach(error => {
-            if (typeof error === 'string') this.log.error(error);
-            else if (typeof error === 'object') this.log.error(error.stack || error.message);
+            if (typeof error === 'string') this.styledLog.error(error);
+            else if (typeof error === 'object') this.styledLog.error(error.stack || error.message);
           });
         } else if (stats?.hasWarnings() && _stats?.warnings) {
-          _stats.warnings.forEach(warning => this.log.warn(warning.stack));
+          _stats.warnings.forEach(warning => this.styledLog.warn(warning.stack));
         }
       }
     );
-
     await Promise.all(compilationPromises);
-
     this.webpackServer.start();
     this.startNodemon();
   }

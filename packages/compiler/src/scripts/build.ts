@@ -1,9 +1,12 @@
-import { Container } from 'typedi';
-import { CompileBase } from '../services';
+import { Container, Inject } from 'typedi';
+import { CompileBase, StyledLog } from '../services';
 import { BindThis } from '../utils';
 import { clientProdConfig, serverProdConfig } from '../webpack';
 
 class Build extends CompileBase {
+  @Inject()
+  protected styledLog: StyledLog;
+
   constructor() {
     super(clientProdConfig, serverProdConfig);
   }
@@ -11,24 +14,22 @@ class Build extends CompileBase {
   @BindThis()
   public run(): void {
     this.createMultiCompiler();
-    this.addLogs(this.clientName, this.clientCompiler);
-    this.addLogs(this.serverName, this.serverCompiler);
     this.multiCompiler.run((err, stats) => {
       const _stats = stats?.toJson();
       if (err?.stack) {
-        this.log.error(err.stack);
-        this.log.doneError();
+        this.styledLog.error(err.stack);
+        this.styledLog.doneError();
       } else if (stats?.hasErrors() && _stats?.errors) {
         _stats.errors.forEach(error => {
-          if (typeof error === 'string') this.log.error(error);
-          else if (typeof error === 'object') this.log.error(error.stack || error.message);
+          if (typeof error === 'string') this.styledLog.error(error);
+          else if (typeof error === 'object') this.styledLog.error(error.stack || error.message);
         });
-        this.log.doneError();
+        this.styledLog.doneError();
       } else if (stats?.hasWarnings() && _stats?.warnings) {
-        _stats.warnings.forEach(warning => this.log.warn(warning.stack));
-        this.log.doneWarning();
+        _stats.warnings.forEach(warning => this.styledLog.warn(warning.stack));
+        this.styledLog.doneWarning();
       } else {
-        this.log.doneSuccess();
+        this.styledLog.doneSuccess();
       }
     });
   }

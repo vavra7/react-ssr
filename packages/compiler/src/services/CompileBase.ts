@@ -1,8 +1,6 @@
 import path from 'path';
 import rimraf from 'rimraf';
-import { Inject } from 'typedi';
 import webpack, { Compiler, Configuration, MultiCompiler } from 'webpack';
-import { Log } from './Log';
 
 export class CompileBase {
   protected clientConfig: Configuration;
@@ -10,9 +8,6 @@ export class CompileBase {
   protected clientName: string;
   protected serverName: string;
   protected _multiCompiler: MultiCompiler | null = null;
-
-  @Inject()
-  protected log: Log;
 
   constructor(clientConfig: Configuration, serverConfig: Configuration) {
     this.clientConfig = clientConfig;
@@ -51,6 +46,8 @@ export class CompileBase {
    */
   protected createMultiCompiler(): void {
     this._multiCompiler = webpack([this.clientConfig, this.serverConfig]);
+    this.addLogs(this.clientName, this.clientCompiler);
+    this.addLogs(this.serverName, this.serverCompiler);
   }
 
   /**

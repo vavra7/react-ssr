@@ -1,5 +1,5 @@
 import path from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 
 export const serverProdConfig: Configuration = {
@@ -27,5 +27,11 @@ export const serverProdConfig: Configuration = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     modules: ['src', 'node_modules']
-  }
+  },
+  plugins: [
+    new DefinePlugin({
+      __SERVER__: true,
+      __BROWSER__: false
+    })
+  ]
 };

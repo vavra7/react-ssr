@@ -1,5 +1,5 @@
 import path from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 
 export const clientProdConfig: Configuration = {
@@ -28,5 +28,11 @@ export const clientProdConfig: Configuration = {
     extensions: ['.tsx', '.ts', '.js'],
     modules: ['src', 'node_modules']
   },
-  plugins: [new WebpackManifestPlugin({ fileName: 'manifest.json' })]
+  plugins: [
+    new WebpackManifestPlugin({ fileName: 'manifest.json' }),
+    new DefinePlugin({
+      __SERVER__: false,
+      __BROWSER__: true
+    })
+  ]
 };

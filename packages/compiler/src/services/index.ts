@@ -1,3 +1,3 @@
 export * from './CompileBase';
-export * from './Log';
+export * from './StyledLog';
 export * from './WebpackServer';
