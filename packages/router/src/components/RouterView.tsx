@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
-import { RoutesConfig } from '../types';
+import { RawLocation, RoutesConfig } from '../types';
 import Route from './Route';
 
 export interface RouterViewProps {
   routesConfig: RoutesConfig;
+  location?: RawLocation;
 }
 
-const RouterView: FC<RouterViewProps> = ({ routesConfig }) => {
+const RouterView: FC<RouterViewProps> = ({ routesConfig, location }) => {
   return (
     <>
       {routesConfig.map(item => (

@@ -28,7 +28,7 @@ class ServerApp {
         '<!DOCTYPE html>' +
           renderToString(
             <HtmlBoilerplate scripts={[this.manifest['bundle.js']]}>
-              <App />
+              <App location={req.path} />
             </HtmlBoilerplate>
           )
       );
@@ -45,3 +45,7 @@ class ServerApp {
 }
 
 new ServerApp().start();
+
+if (module.hot) {
+  module.hot.accept();
+}

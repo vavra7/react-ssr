@@ -7,3 +7,5 @@ interface RouteConfig<Name = string> {
   name: Name;
   component: ComponentType;
 }
+
+export type RawLocation = string | { name: string; params: Record<string, string | number> };

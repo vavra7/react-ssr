@@ -6,10 +6,10 @@ const Layout: FC = ({ children }) => {
     <>
       <ul>
         <li>
-          <Link>test1</Link>
+          <Link location="test/1">test1</Link>
         </li>
         <li>
-          <Link>test2</Link>
+          <Link location="test/2">test2</Link>
         </li>
       </ul>
       <div>{children}</div>
