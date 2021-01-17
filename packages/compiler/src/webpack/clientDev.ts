@@ -1,3 +1,4 @@
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
@@ -10,7 +11,7 @@ export const clientDevConfig: Configuration = {
   devtool: 'eval-cheap-source-map',
   entry: {
     bundle: [
-      `webpack-hot-middleware/client?path=${WEBPACK_HOST}:${WEBPACK_PORT}/__webpack_hmr`,
+      `webpack-hot-middleware/client?path=${WEBPACK_HOST}:${WEBPACK_PORT}/__webpack_hmr&noInfo=true`,
       path.resolve(process.cwd(), 'src/client.tsx')
     ]
   },
@@ -24,13 +25,13 @@ export const clientDevConfig: Configuration = {
   module: {
     rules: [
       {
-        test: /.(ts|tsx)$/,
+        test: /.(js|jsx|ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+            plugins: ['@babel/plugin-proposal-class-properties', 'react-refresh/babel']
           }
         }
       }
@@ -46,7 +47,8 @@ export const clientDevConfig: Configuration = {
     new DefinePlugin({
       __SERVER__: false,
       __BROWSER__: true
-    })
+    }),
+    new ReactRefreshWebpackPlugin()
   ],
   stats: {
     cached: false,

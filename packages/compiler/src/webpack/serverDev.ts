@@ -20,7 +20,7 @@ export const serverDevConfig: Configuration = {
   module: {
     rules: [
       {
-        test: /.(ts|tsx)$/,
+        test: /.(js|jsx|ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
           loader: 'babel-loader',
