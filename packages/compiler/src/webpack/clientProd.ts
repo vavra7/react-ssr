@@ -20,7 +20,13 @@ export const clientProdConfig: Configuration = {
       {
         test: /.(ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
-        use: 'ts-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-typescript'],
+            plugins: ['@babel/plugin-proposal-class-properties']
+          }
+        }
       }
     ]
   },

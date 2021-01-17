@@ -12,13 +12,17 @@
     "lint": "eslint 'src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "^7.12.7",
+    "babel-loader": "^8.2.2",
     "chalk": "^4.1.0",
     "commander": "^6.2.1",
     "express": "^4.17.1",
     "nodemon": "^2.0.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "ts-loader": "^8.0.14",
     "typedi": "^0.8.0",
     "webpack": "^5.11.1",
     "webpack-dev-middleware": "^4.0.2",
