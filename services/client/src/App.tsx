@@ -1,4 +1,4 @@
-import { RouterView } from '@react-ssr/router';
+import { RouterProvider, RouterView } from '@react-ssr/router';
 import React, { FC } from 'react';
 import Layout from './components/Layout';
 import TestComponent from './components/TestComponent';
@@ -12,10 +12,12 @@ const App: FC<AppProps> = ({ location }) => {
   return (
     <>
       <div>global alerts</div>
-      <Layout>
-        <RouterView location={location} routesConfig={routes} />
-        <TestComponent />
-      </Layout>
+      <RouterProvider location={location} routesConfig={routes}>
+        <Layout>
+          <RouterView />
+          <TestComponent />
+        </Layout>
+      </RouterProvider>
     </>
   );
 };

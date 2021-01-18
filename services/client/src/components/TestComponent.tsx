@@ -5,11 +5,14 @@ const TestComponent: FC = () => {
   const router = useRouter();
   const onClick = (): void => {
     router.locationHook();
+    console.log(router.routesConfig);
   };
   return (
     <>
       <div>test component</div>
-      <button onClick={onClick}>test router</button>
+      <button onClick={onClick} type="button">
+        test router
+      </button>
     </>
   );
 };

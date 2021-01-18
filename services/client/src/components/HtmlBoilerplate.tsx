@@ -11,13 +11,13 @@ const HtmlBoilerplate: FC<HtmlBoilerplateProps> = ({ children, scripts }) => {
       <html lang="en">
         <head>
           <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta content="width=device-width, initial-scale=1.0" name="viewport" />
           <title>Document</title>
         </head>
         <body>
           <div id="root">{children}</div>
           {scripts.map((src, index) => (
-            <script key={index} src={src} defer />
+            <script defer key={index} src={src} />
           ))}
         </body>
       </html>
