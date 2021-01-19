@@ -9,9 +9,7 @@ export type LocationHook = () => [path: string, navigate: Navigate];
 const locationService = Container.get(Location);
 
 export const useLocation: LocationHook = () => {
-  const [path, update] = useState('asdf');
-
-  console.log(locationService.getCurrentPathname())
+  const [path] = useState('test');
 
   const navigate = (): void => {
     console.log('navigate');

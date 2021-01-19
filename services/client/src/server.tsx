@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { FilledContext, HelmetProvider } from 'react-helmet-async';
 
 import App from './App';
 import HtmlBoilerplate from './components/HtmlBoilerplate';
@@ -25,14 +26,23 @@ class ServerApp {
 
   private routesInit(): void {
     this.app.get('*', async (req, res) => {
-      res.send(
-        '<!DOCTYPE html>' +
-          renderToString(
-            <HtmlBoilerplate scripts={[this.manifest['bundle.js']]}>
-              <App location={req.path} />
-            </HtmlBoilerplate>
-          )
+      const helmetContext: FilledContext | object = {};
+      const reactApp = renderToString(
+        <HelmetProvider context={helmetContext}>
+          <App location={req.path} />
+        </HelmetProvider>
       );
+      const html =
+        '<!DOCTYPE html>' +
+        renderToString(
+          <HtmlBoilerplate
+            helmetContext={helmetContext as FilledContext}
+            scripts={[this.manifest['bundle.js']]}
+          >
+            {reactApp}
+          </HtmlBoilerplate>
+        );
+      res.send(html);
     });
   }
 

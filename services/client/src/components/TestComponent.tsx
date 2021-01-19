@@ -4,7 +4,6 @@ import React, { FC } from 'react';
 const TestComponent: FC = () => {
   const router = useRouter();
   const onClick = (): void => {
-    router.locationHook();
     console.log(router.routesConfig);
   };
   return (
