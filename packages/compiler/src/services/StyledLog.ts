@@ -7,7 +7,7 @@ export type LogType = 'success' | 'error' | 'warning';
 export class StyledLog {
   public doneSuccess(message: ` ${string} ` = ' Success '): void {
     console.log('');
-    console.log(chalk.bgGreen.gray.bold(message));
+    console.log(chalk.bgGreen.black.bold(message));
   }
 
   public doneError(message: ` ${string} ` = ' Error '): void {

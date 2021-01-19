@@ -1,15 +1,17 @@
 import { Link } from '@react-ssr/router';
 import React, { FC } from 'react';
 
+import { Route } from '../router/routes';
+
 const Layout: FC = ({ children }) => {
   return (
     <>
       <ul>
         <li>
-          <Link location="test/1">test1</Link>
+          <Link to="/test1">test1</Link>
         </li>
         <li>
-          <Link location="test/2">test2</Link>
+          <Link to={{ name: Route.Test2 }}>test2</Link>
         </li>
       </ul>
       <div>{children}</div>

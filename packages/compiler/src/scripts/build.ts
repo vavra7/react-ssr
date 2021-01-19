@@ -1,4 +1,5 @@
 import { Container, Inject } from 'typedi';
+
 import { CompileBase, StyledLog } from '../services';
 import { BindThis } from '../utils';
 import { clientProdConfig, serverProdConfig } from '../webpack';

@@ -1,6 +1,7 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 
 import { RouterContext } from '../context';
+import { useLocation } from '../hooks';
 import { RawLocation, RoutesConfig } from '../types';
 
 export interface RouterProviderProps {
@@ -10,18 +11,27 @@ export interface RouterProviderProps {
 }
 
 const RouterProvider: FC<RouterProviderProps> = ({ children, routesConfig }) => {
+  const [path, navigate] = useLocation();
+
   const getRouteConfig = useCallback(
     (rawLocation: RawLocation) => {
-      console.log(rawLocation);
-      return routesConfig[1] || null;
+      if (typeof rawLocation === 'string') {
+        for (const routeConfig of routesConfig) {
+          if (routeConfig.path === rawLocation) return routeConfig;
+        }
+        return null;
+      } else {
+        for (const routeConfig of routesConfig) {
+          if (routeConfig.name === rawLocation.name) return routeConfig;
+        }
+        return null;
+      }
     },
     [routesConfig]
   );
 
   return (
-    <RouterContext.Provider
-      value={{ locationHook: () => console.log('locationHook'), routesConfig, getRouteConfig }}
-    >
+    <RouterContext.Provider value={{ path, navigate, routesConfig, getRouteConfig }}>
       {children}
     </RouterContext.Provider>
   );

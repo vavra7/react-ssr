@@ -1,4 +1,5 @@
 import { RoutesConfig } from '@react-ssr/router';
+
 import Test1 from '../views/Test1';
 import Test2 from '../views/Test2';
 

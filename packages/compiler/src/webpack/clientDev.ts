@@ -2,6 +2,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+
 import { WEBPACK_HOST, WEBPACK_PORT } from '../config';
 
 export const clientDevConfig: Configuration = {
@@ -31,7 +32,11 @@ export const clientDevConfig: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
-            plugins: ['@babel/plugin-proposal-class-properties', 'react-refresh/babel']
+            plugins: [
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              '@babel/plugin-proposal-class-properties',
+              'react-refresh/babel'
+            ]
           }
         }
       }

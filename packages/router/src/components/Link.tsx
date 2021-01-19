@@ -1,20 +1,35 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, MouseEvent, ReactNode, useCallback, useMemo } from 'react';
+
 import { Router } from '../context';
 import { withRouter } from '../hoc';
-import { RawLocation } from '../types';
+import { RawLocation, RouteConfig } from '../types';
 
 export interface LinkProps {
   children: ReactNode;
-  location: RawLocation;
+  to: RawLocation;
   router: Router;
 }
 
-const Link: FC<LinkProps> = ({ children, location, router }) => {
-  console.log(router);
+const Link: FC<LinkProps> = ({ children, to, router }) => {
+  const routeConfig: RouteConfig | null = useMemo(() => {
+    return router.getRouteConfig(to);
+  }, [to, router]);
+
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>): void => {
+      if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.button !== 0)
+        return;
+      event.preventDefault();
+      router.navigate();
+    },
+    [router]
+  );
+
   return (
     <>
-      <pre>{JSON.stringify(location, null, 4)}</pre>
-      <a>{children}</a>
+      <a href={routeConfig?.path} onClick={handleClick}>
+        {children}
+      </a>
     </>
   );
 };

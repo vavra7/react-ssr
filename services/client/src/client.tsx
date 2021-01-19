@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 

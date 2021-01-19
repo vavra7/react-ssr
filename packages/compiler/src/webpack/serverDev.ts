@@ -1,6 +1,7 @@
 import path from 'path';
 import { Configuration, DefinePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
+
 import { WEBPACK_HOST, WEBPACK_PORT } from '../config';
 
 export const serverDevConfig: Configuration = {
@@ -26,7 +27,10 @@ export const serverDevConfig: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+            plugins: [
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              '@babel/plugin-proposal-class-properties'
+            ]
           }
         }
       }
