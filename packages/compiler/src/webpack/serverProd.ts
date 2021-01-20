@@ -39,10 +39,8 @@ export const serverProdConfig: Configuration = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: '[name].[contenthash].[ext]',
-              pathname: 'assets',
-              emitFile: false,
-              esModule: false
+              name: 'assets/[name].[contenthash].[ext]',
+              emitFile: false
             }
           }
         ]

@@ -9,5 +9,4 @@ clear:
 build:
 	$(MAKE) -C packages/compiler build
 	$(MAKE) -C packages/router build
-	rm -rf node_modules/.yarn-integrity && yarn
 	$(MAKE) -C services/client build

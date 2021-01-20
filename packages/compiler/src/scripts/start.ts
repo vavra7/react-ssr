@@ -1,11 +1,12 @@
 import nodemon from 'nodemon';
 import path from 'path';
-import Container, { Inject } from 'typedi';
+import Container, { Inject, Service } from 'typedi';
 
 import { CompileBase, StyledLog, WebpackServer } from '../services';
 import { BindThis } from '../utils';
 import { clientDevConfig, serverDevConfig } from '../webpack';
 
+@Service()
 class Start extends CompileBase {
   @Inject()
   private webpackServer: WebpackServer;

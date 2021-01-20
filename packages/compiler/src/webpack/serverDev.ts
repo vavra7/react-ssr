@@ -15,7 +15,7 @@ export const serverDevConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist'),
     filename: 'index.js',
-    publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}}/static/`
+    publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}/static/`
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
   module: {
@@ -41,8 +41,7 @@ export const serverDevConfig: Configuration = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: '[name].[ext]',
-              pathname: 'assets',
+              name: 'assets/[name].[ext]',
               emitFile: false
             }
           }

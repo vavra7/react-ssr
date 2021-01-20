@@ -6,4 +6,5 @@ clear:
 
 build:
 	yarn && \
-	yarn build
+	yarn build && \
+	rm -rf ../../node_modules/.yarn-integrity && yarn

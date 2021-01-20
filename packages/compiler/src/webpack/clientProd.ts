@@ -38,8 +38,7 @@ export const clientProdConfig: Configuration = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: '[name].[contenthash].[ext]',
-              pathname: 'assets'
+              name: 'assets/[name].[contenthash].[ext]'
             }
           }
         ]

@@ -1,9 +1,10 @@
-import { Container, Inject } from 'typedi';
+import { Container, Inject, Service } from 'typedi';
 
 import { CompileBase, StyledLog } from '../services';
 import { BindThis } from '../utils';
 import { clientProdConfig, serverProdConfig } from '../webpack';
 
+@Service()
 class Build extends CompileBase {
   @Inject()
   protected styledLog: StyledLog;
