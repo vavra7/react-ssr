@@ -2,6 +2,7 @@ import { RouterProvider, RouterView } from '@react-ssr/router';
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import favicon from './assets/images/favicon.png';
 import Layout from './components/Layout';
 import TestComponent from './components/TestComponent';
 import { routes } from './router/routes';
@@ -17,7 +18,7 @@ const App: FC<AppProps> = ({ location }) => {
         <html lang="en" />
         <title lang="en">React SSR</title>
         <meta content="React SSR description" name="description" />
-        <link href="" rel="icon" type="image/png" />
+        <link href={favicon} rel="icon" type="image/png" />
       </Helmet>
 
       <div>global alerts</div>

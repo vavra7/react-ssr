@@ -18,7 +18,7 @@ export const clientProdConfig: Configuration = {
   module: {
     rules: [
       {
-        test: /.(js|jsx|ts|tsx)$/,
+        test: /.(js|jsx|ts|tsx)$/i,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
           loader: 'babel-loader',
@@ -30,6 +30,19 @@ export const clientProdConfig: Configuration = {
             ]
           }
         }
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 2048,
+              name: '[name].[contenthash].[ext]',
+              pathname: 'assets'
+            }
+          }
+        ]
       }
     ]
   },

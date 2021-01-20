@@ -39,6 +39,19 @@ export const clientDevConfig: Configuration = {
             ]
           }
         }
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 2048,
+              name: '[name].[contenthash].[ext]',
+              pathname: 'assets'
+            }
+          }
+        ]
       }
     ]
   },

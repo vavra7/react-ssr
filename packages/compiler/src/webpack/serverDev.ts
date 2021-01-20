@@ -33,6 +33,20 @@ export const serverDevConfig: Configuration = {
             ]
           }
         }
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 2048,
+              name: '[name].[ext]',
+              pathname: 'assets',
+              emitFile: false
+            }
+          }
+        ]
       }
     ]
   },

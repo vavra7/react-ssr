@@ -14,6 +14,7 @@ class Build extends CompileBase {
 
   @BindThis()
   public run(): void {
+    this.clearDistFolder();
     this.createMultiCompiler();
     this.multiCompiler.run((err, stats) => {
       const _stats = stats?.toJson();

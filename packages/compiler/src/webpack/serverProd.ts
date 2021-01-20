@@ -12,6 +12,7 @@ export const serverProdConfig: Configuration = {
   },
   output: {
     path: path.resolve(process.cwd(), 'dist'),
+    publicPath: '/static/',
     filename: 'index.js'
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
@@ -30,6 +31,21 @@ export const serverProdConfig: Configuration = {
             ]
           }
         }
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 2048,
+              name: '[name].[contenthash].[ext]',
+              pathname: 'assets',
+              emitFile: false,
+              esModule: false
+            }
+          }
+        ]
       }
     ]
   },
