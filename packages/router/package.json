@@ -11,7 +11,7 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "react": ">=16.8.0",
+    "react": ">=17.0.1",
     "typedi": ">=0.10.0",
     "reflect-metadata": ">=0.1.13"
   }
