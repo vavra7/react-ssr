@@ -1,17 +1,14 @@
-import { RouterProvider, RouterView } from '@react-ssr/router';
+import { RouterView } from '@react-ssr/router';
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import favicon from './assets/images/favicon.png';
 import Layout from './components/Layout';
 import TestComponent from './components/TestComponent';
-import { routes } from './router/routes';
 
-export interface AppProps {
-  location?: string;
-}
+export interface AppProps {}
 
-const App: FC<AppProps> = ({ location }) => {
+const App: FC<AppProps> = () => {
   return (
     <>
       <Helmet>
@@ -23,12 +20,10 @@ const App: FC<AppProps> = ({ location }) => {
 
       <div>global alerts</div>
 
-      <RouterProvider location={location} routesConfig={routes}>
-        <Layout>
-          <RouterView />
-          <TestComponent />
-        </Layout>
-      </RouterProvider>
+      <Layout>
+        <RouterView />
+        <TestComponent />
+      </Layout>
     </>
   );
 };

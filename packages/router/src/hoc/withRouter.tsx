@@ -1,6 +1,7 @@
 import React, { ComponentType, FC } from 'react';
 
-import { Router, RouterContext } from '../context';
+import { RouterContext } from '../context';
+import { Router } from '../types';
 
 interface InjectedProps {
   router: Router;

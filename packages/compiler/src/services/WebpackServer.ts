@@ -4,6 +4,7 @@ import { Service } from 'typedi';
 import { Compiler, Configuration } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+
 import { WEBPACK_PORT } from '../config';
 
 @Service()

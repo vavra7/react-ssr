@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 const TestComponent: FC = () => {
   const router = useRouter();
   const onClick = (): void => {
-    console.log(router.routesConfig);
+    console.log(router);
   };
   return (
     <>

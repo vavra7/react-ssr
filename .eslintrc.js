@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/explicit-function-return-type': [
       1,
       {
@@ -34,6 +35,7 @@ module.exports = {
         }
       }
     ],
+    '@typescript-eslint/no-non-null-assertion': 0,
     'react/jsx-sort-props': [
       1,
       {

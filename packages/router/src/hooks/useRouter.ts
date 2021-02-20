@@ -1,11 +1,21 @@
 import { useContext } from 'react';
 
-import { Router, RouterContext } from '../context';
+import { isRouterContext, RouterContext } from '../context';
+import { Router } from '../types';
 
 export function useRouter(): Router {
-  const router = useContext(RouterContext);
-  if (!router) {
+  const context = useContext(RouterContext);
+
+  if (!isRouterContext(context)) {
     throw new Error('Router needs to be used inside "RouterProvider".');
   }
-  return router;
+
+  const [path, navigate] = context.locationHook({ staticPath: context.staticPath });
+
+  return {
+    path,
+    navigate,
+    getRouteConfig: context.getRouteConfig,
+    routeConfig: context.getRouteConfig(path)
+  };
 }

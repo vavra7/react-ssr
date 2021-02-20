@@ -6,6 +6,5 @@ import RouterView from './components/RouterView';
 
 export * from './hoc';
 export * from './hooks';
-export * from './services';
 export * from './types';
 export { Link, RouterProvider, RouterView };

@@ -1,40 +1,28 @@
-import React, { FC, ReactNode, useCallback } from 'react';
+import React, { FC, ReactNode, useRef } from 'react';
 
-import { RouterContext } from '../context';
-import { useLocation } from '../hooks';
-import { RawLocation, RoutesConfig } from '../types';
+import { RawRouterContext, RouterContext } from '../context';
+import { RoutesConfig } from '../types';
+import { buildRouterContext } from '../utils';
 
 export interface RouterProviderProps {
   children: ReactNode;
-  routesConfig: RoutesConfig;
-  location?: RawLocation;
+  context?: RawRouterContext;
+  routesConfig?: RoutesConfig;
+  staticPath?: string;
 }
 
-const RouterProvider: FC<RouterProviderProps> = ({ children, routesConfig }) => {
-  const [path, navigate] = useLocation();
+const RouterProvider: FC<RouterProviderProps> = ({
+  children,
+  routesConfig,
+  staticPath,
+  context = {}
+}) => {
+  let { current: routerContext } = useRef<RouterContext | undefined>();
+  const value: RouterContext =
+    routerContext ||
+    (routerContext = buildRouterContext(Object.assign(context, { staticPath, routesConfig })));
 
-  const getRouteConfig = useCallback(
-    (rawLocation: RawLocation) => {
-      if (typeof rawLocation === 'string') {
-        for (const routeConfig of routesConfig) {
-          if (routeConfig.path === rawLocation) return routeConfig;
-        }
-        return null;
-      } else {
-        for (const routeConfig of routesConfig) {
-          if (routeConfig.name === rawLocation.name) return routeConfig;
-        }
-        return null;
-      }
-    },
-    [routesConfig]
-  );
-
-  return (
-    <RouterContext.Provider value={{ path, navigate, routesConfig, getRouteConfig }}>
-      {children}
-    </RouterContext.Provider>
-  );
+  return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 };
 
 export default RouterProvider;

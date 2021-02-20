@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import Container from 'typedi';
 
-import { Location } from '../services';
-
-export type Navigate = () => void;
-export type LocationHook = () => [path: string, navigate: Navigate];
-
-const locationService = Container.get(Location);
+import { LocationHook } from '../types';
+import { __SERVER__, getCurrentPath } from '../utils';
 
 export const useLocation: LocationHook = () => {
-  const [path] = useState('test');
+  const [path] = useState(() => {
+    if (__SERVER__) return '/';
+    else return getCurrentPath();
+  });
 
   const navigate = (): void => {
     console.log('navigate');

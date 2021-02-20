@@ -1,3 +1,5 @@
+import { RouterProvider } from '@react-ssr/router';
+import { RawRouterContext } from '@react-ssr/router/dist/context';
 import express, { Application } from 'express';
 import fs from 'fs';
 import path from 'path';
@@ -8,6 +10,7 @@ import { FilledContext, HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import HtmlBoilerplate from './components/HtmlBoilerplate';
 import { config } from './config';
+import { routes } from './router/routes';
 
 class ServerApp {
   private app: Application;
@@ -27,11 +30,16 @@ class ServerApp {
   private routesInit(): void {
     this.app.get('*', async (req, res) => {
       const helmetContext: FilledContext | object = {};
+      const routerContext: RawRouterContext = {};
+
       const reactApp = renderToString(
-        <HelmetProvider context={helmetContext}>
-          <App location={req.path} />
-        </HelmetProvider>
+        <RouterProvider context={routerContext} routesConfig={routes} staticPath={req.originalUrl}>
+          <HelmetProvider context={helmetContext}>
+            <App />
+          </HelmetProvider>
+        </RouterProvider>
       );
+
       const html =
         '<!DOCTYPE html>' +
         renderToString(

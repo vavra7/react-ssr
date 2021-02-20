@@ -10,7 +10,7 @@ export enum Route {
 
 export const routes: RoutesConfig<Route> = [
   {
-    path: '/test1',
+    path: '/',
     name: Route.Test1,
     component: Test1
   },

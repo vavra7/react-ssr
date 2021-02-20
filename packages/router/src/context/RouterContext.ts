@@ -1,13 +1,18 @@
 import { createContext } from 'react';
 
-import { Navigate } from '../hooks';
-import { RawLocation, RouteConfig, RoutesConfig } from '../types';
+import { LocationHook, RawLocation, RouteConfig, RoutesConfig } from '../types';
 
-export interface Router {
-  path: string;
-  navigate: Navigate;
+export interface RouterContext {
   routesConfig: RoutesConfig;
+  staticPath?: string;
+  locationHook: LocationHook;
   getRouteConfig: (rawLocation: RawLocation) => RouteConfig | null;
 }
 
-export const RouterContext = createContext<Router | null>(null);
+export type RawRouterContext = Partial<RouterContext>;
+
+export function isRouterContext(context: RawRouterContext): context is RouterContext {
+  return !!context.locationHook && !!context.getRouteConfig;
+}
+
+export const RouterContext = createContext<RawRouterContext>({});
