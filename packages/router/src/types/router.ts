@@ -1,10 +1,10 @@
-import { RouterContext } from '../context';
+import { Matcher } from '../services';
 import { Navigate } from './locationHook';
-import { RouteConfig } from './routeConfigs';
+import { RouteConfig } from './routesConfig';
 
 export interface Router {
   path: string;
   navigate: Navigate;
   routeConfig: RouteConfig | null;
-  getRouteConfig: RouterContext['getRouteConfig'];
+  matcher: Matcher;
 }

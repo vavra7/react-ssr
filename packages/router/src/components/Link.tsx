@@ -16,18 +16,15 @@ const Link: FC<LinkProps> = ({ children, to }) => {
       if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.button !== 0)
         return;
       event.preventDefault();
-      console.log(router);
+      router.navigate(to);
     },
-    [router]
+    [router, to]
   );
 
   const href = useMemo<string | undefined>(() => {
-    const routeConfig = router.getRouteConfig(to);
-    if (routeConfig) {
-      return routeConfig.path;
-    } else {
-      return undefined;
-    }
+    const path = router.matcher.getPath(to);
+    if (path) return path;
+    else return undefined;
   }, [to]);
 
   return (

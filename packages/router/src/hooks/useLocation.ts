@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { LocationHook } from '../types';
-import { __SERVER__, getCurrentPath } from '../utils';
+import { LocationHook, Navigate } from '../types';
+import { getCurrentPath } from '../utils';
 
-export const useLocation: LocationHook = () => {
-  const [path] = useState(() => {
-    if (__SERVER__) return '/';
-    else return getCurrentPath();
-  });
+export const useLocation: LocationHook = ({ matcher } = {}) => {
+  const [path] = useState<string>(() => getCurrentPath());
 
-  const navigate = (): void => {
-    console.log('navigate');
-  };
+  const navigate = useCallback<Navigate>(
+    (to, { replace = false } = {}) => {
+      if (!matcher) throw new ReferenceError('Matcher was not passed to the location hook.');
+      const newPath = matcher.getPath(to);
+      if (!newPath) return;
+      if (replace) {
+        history.replaceState(null, '', newPath);
+      } else {
+        history.pushState(null, '', newPath);
+      }
+    },
+    [matcher]
+  );
+
   return [path, navigate];
 };

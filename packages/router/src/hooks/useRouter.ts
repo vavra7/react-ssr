@@ -10,12 +10,15 @@ export function useRouter(): Router {
     throw new Error('Router needs to be used inside "RouterProvider".');
   }
 
-  const [path, navigate] = context.locationHook({ staticPath: context.staticPath });
+  const [path, navigate] = context.locationHook({
+    matcher: context.matcher,
+    staticPath: context.staticPath
+  });
 
   return {
     path,
     navigate,
-    getRouteConfig: context.getRouteConfig,
-    routeConfig: context.getRouteConfig(path)
+    matcher: context.matcher,
+    routeConfig: context.matcher.getRouteConfig(path)
   };
 }

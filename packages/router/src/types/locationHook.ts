@@ -1,6 +1,12 @@
-export type Navigate = (to: string, options?: { replace?: boolean }) => void;
+import { RouterContext } from '../context';
+import { Matcher } from '../services';
+import { RawLocation } from './locations';
 
-export type LocationHook = (options?: {
-  base?: string;
-  staticPath?: string;
-}) => [path: string, navigate: Navigate];
+export type Navigate = (to: RawLocation, options?: { replace?: boolean }) => void;
+
+export interface LocationHookProps {
+  matcher?: Matcher;
+  staticPath?: RouterContext['staticPath'];
+}
+
+export type LocationHook = (props?: LocationHookProps) => [path: string, navigate: Navigate];

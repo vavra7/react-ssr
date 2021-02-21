@@ -18,9 +18,10 @@ const RouterProvider: FC<RouterProviderProps> = ({
   context = {}
 }) => {
   let { current: routerContext } = useRef<RouterContext | undefined>();
+
   const value: RouterContext =
     routerContext ||
-    (routerContext = buildRouterContext(Object.assign(context, { staticPath, routesConfig })));
+    (routerContext = buildRouterContext(Object.assign(context, { staticPath }), routesConfig));
 
   return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 };

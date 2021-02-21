@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2021-02-20T18:55:41.638Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="F2nzdfHt0qlGYyThMRf8" version="14.2.4" type="embed">
+<mxfile host="65bd71144e" modified="2021-02-21T17:00:27.691Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="I9tjLnYzXMjulrLjJe4j" version="14.2.4" type="embed">
     <diagram id="_YIK-AuZUHdV7MpziC5e" name="Router">
-        <mxGraphModel dx="495" dy="717" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="988" dy="687" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -13,7 +13,7 @@
                 <mxCell id="3" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;RawRouterContext&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div style=&quot;height: 2px&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;spacing=11;labelBorderColor=none;labelBackgroundColor=none;spacingLeft=144;" parent="1" vertex="1">
                     <mxGeometry x="100" y="110" width="140" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;RouterContext&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div style=&quot;height: 2px&quot;&gt;&lt;ul&gt;&lt;li&gt;locationHook&lt;/li&gt;&lt;li&gt;staticPath&lt;/li&gt;&lt;li&gt;routesConfig&lt;/li&gt;&lt;li&gt;getRouteConfig&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;spacing=11;labelBorderColor=none;labelBackgroundColor=none;spacingLeft=144;" parent="1" vertex="1">
+                <mxCell id="4" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;RouterContext&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div style=&quot;height: 2px&quot;&gt;&lt;ul&gt;&lt;li&gt;locationHook&lt;/li&gt;&lt;li&gt;staticPath&lt;/li&gt;&lt;li&gt;matcher&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;spacing=11;labelBorderColor=none;labelBackgroundColor=none;spacingLeft=144;" parent="1" vertex="1">
                     <mxGeometry x="95" y="540" width="140" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="buildRouterContext" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="3" target="4" edge="1">
@@ -26,7 +26,7 @@
                 <mxCell id="7" value="hooks/useRouter.ts" style="shape=umlFrame;whiteSpace=wrap;html=1;labelBackgroundColor=none;align=left;width=120;height=30;" parent="1" vertex="1">
                     <mxGeometry x="380" y="40" width="230" height="210" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Router&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div style=&quot;height: 2px&quot;&gt;&lt;ul&gt;&lt;li&gt;path&lt;/li&gt;&lt;li&gt;navigate&lt;/li&gt;&lt;li&gt;routeConfig&lt;/li&gt;&lt;li&gt;getRouteConfig&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;spacing=11;labelBorderColor=none;labelBackgroundColor=none;spacingLeft=144;" parent="1" vertex="1">
+                <mxCell id="8" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Router&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div style=&quot;height: 2px&quot;&gt;&lt;ul&gt;&lt;li&gt;path&lt;/li&gt;&lt;li&gt;navigate&lt;/li&gt;&lt;li&gt;routeConfig&lt;/li&gt;&lt;li&gt;matcher&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;spacing=11;labelBorderColor=none;labelBackgroundColor=none;spacingLeft=144;" parent="1" vertex="1">
                     <mxGeometry x="425" y="90" width="145" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="9" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.546;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="4" target="8" edge="1">

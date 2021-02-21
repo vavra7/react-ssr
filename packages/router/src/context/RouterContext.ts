@@ -1,18 +1,18 @@
 import { createContext } from 'react';
 
-import { LocationHook, RawLocation, RouteConfig, RoutesConfig } from '../types';
+import { Matcher } from '../services';
+import { LocationHook } from '../types';
 
 export interface RouterContext {
-  routesConfig: RoutesConfig;
   staticPath?: string;
   locationHook: LocationHook;
-  getRouteConfig: (rawLocation: RawLocation) => RouteConfig | null;
+  matcher: Matcher;
 }
 
 export type RawRouterContext = Partial<RouterContext>;
 
 export function isRouterContext(context: RawRouterContext): context is RouterContext {
-  return !!context.locationHook && !!context.getRouteConfig;
+  return !!context.locationHook && !!context.matcher;
 }
 
 export const RouterContext = createContext<RawRouterContext>({});
