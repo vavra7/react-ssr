@@ -8,7 +8,7 @@ const Layout: FC = ({ children }) => {
     <>
       <ul>
         <li>
-          <Link to="/test1">test1</Link>
+          <Link to={{ name: Route.Test1 }}>test1</Link>
         </li>
         <li>
           <Link to={{ name: Route.Test2 }}>test2</Link>

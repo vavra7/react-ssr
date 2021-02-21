@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, ReactNode, useCallback } from 'react';
+import React, { FC, MouseEvent, ReactNode, useCallback, useMemo } from 'react';
 
 import { useRouter } from '../hooks';
 import { RawLocation } from '../types';
@@ -21,12 +21,19 @@ const Link: FC<LinkProps> = ({ children, to }) => {
     [router]
   );
 
+  const href = useMemo<string | undefined>(() => {
+    const routeConfig = router.getRouteConfig(to);
+    if (routeConfig) {
+      return routeConfig.path;
+    } else {
+      return undefined;
+    }
+  }, [to]);
+
   return (
-    <>
-      <a href={'TODO'} onClick={handleClick}>
-        {children} {router.path}
-      </a>
-    </>
+    <a href={href} onClick={handleClick}>
+      {children}
+    </a>
   );
 };
 
