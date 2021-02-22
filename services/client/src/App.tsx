@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 
 import favicon from './assets/images/favicon.png';
 import Layout from './components/Layout';
-import TestComponent from './components/TestComponent';
 
 export interface AppProps {}
 
@@ -22,7 +21,6 @@ const App: FC<AppProps> = () => {
 
       <Layout>
         <RouterView />
-        <TestComponent />
       </Layout>
     </>
   );

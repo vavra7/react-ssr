@@ -8,7 +8,9 @@
     "start": "tsc --watch",
     "lint": "eslint 'src/**/*.{js,ts}'"
   },
-  "dependencies": {},
+  "dependencies": {
+    "url-pattern": "^1.0.3"
+  },
   "devDependencies": {},
   "peerDependencies": {
     "react": ">=17.0.1"

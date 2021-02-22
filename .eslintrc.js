@@ -50,6 +50,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': [1, { allow: 'single-child' }],
     'react/prop-types': 0,
     'simple-import-sort/imports': 1,
-    'simple-import-sort/exports': 1
+    'simple-import-sort/exports': 1,
+    'prefer-rest-params': 0
   }
 };
