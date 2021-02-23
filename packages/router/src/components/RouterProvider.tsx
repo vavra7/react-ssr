@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useRef } from 'react';
 
-import { RawRouterContext, RouterContext } from '../context';
-import { RoutesConfig } from '../types';
+import { RouterContext } from '../context';
+import { RawRouterContext, RoutesConfig, TRouterContext } from '../types';
 import { buildRouterContext } from '../utils';
 
 export interface RouterProviderProps {
@@ -17,9 +17,9 @@ const RouterProvider: FC<RouterProviderProps> = ({
   staticPath,
   context = {}
 }) => {
-  let { current: routerContext } = useRef<RouterContext | undefined>();
+  let { current: routerContext } = useRef<TRouterContext | undefined>();
 
-  const value: RouterContext =
+  const value: TRouterContext =
     routerContext ||
     (routerContext = buildRouterContext(Object.assign(context, { staticPath }), routesConfig));
 

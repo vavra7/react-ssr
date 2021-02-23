@@ -1,7 +1,6 @@
 import { RoutesConfig } from '@react-ssr/router';
 
 import Test1 from '../views/Test1';
-import Test2 from '../views/Test2';
 
 export enum Route {
   Test1 = 'test1',
@@ -17,6 +16,6 @@ export const routes: RoutesConfig<Route> = [
   {
     path: '/test2',
     name: Route.Test2,
-    component: Test2
+    module: () => import('../views/Test2')
   }
 ];

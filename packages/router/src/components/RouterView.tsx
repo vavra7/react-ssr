@@ -1,18 +1,14 @@
-import { createElement, FC } from 'react';
+import React, { ComponentType, createElement, FC, ReactElement, useEffect, useState } from 'react';
 
 import { useRouter } from '../hooks';
+import DynamicRoute from './DynamicRoute';
 
 export interface RouterViewProps {}
 
 const RouterView: FC<RouterViewProps> = () => {
-  const { matcher, path } = useRouter();
-  const routeConfig = matcher.getRouteConfig(path);
+  const { routeConfig } = useRouter();
 
-  if (routeConfig) {
-    return createElement(routeConfig.component);
-  } else {
-    return null;
-  }
+  return <DynamicRoute component={routeConfig?.component} module={routeConfig?.module} />;
 };
 
 export default RouterView;

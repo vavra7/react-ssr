@@ -1,9 +1,17 @@
 import { ComponentType } from 'react';
 
-export type RoutesConfig<Name = string> = RouteConfig<Name>[];
+import { RequireAtLeastOne } from './RequireAtLeastOne';
 
-export interface RouteConfig<Name = string> {
+interface BaseConfig<Name = string> {
   path: `/${string}`;
   name: Name;
-  component: ComponentType;
+  component?: ComponentType;
+  module?: () => Promise<{ default: ComponentType }>;
 }
+
+export type RouteConfig<Name = string> = RequireAtLeastOne<
+  BaseConfig<Name>,
+  'component' | 'module'
+>;
+
+export type RoutesConfig<Name = string> = RouteConfig<Name>[];

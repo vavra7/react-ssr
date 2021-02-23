@@ -1,5 +1,4 @@
-import { RouterProvider } from '@react-ssr/router';
-import { RawRouterContext } from '@react-ssr/router/dist/context';
+import { loadModules, RawRouterContext, RouterProvider } from '@react-ssr/router';
 import express, { Application } from 'express';
 import fs from 'fs';
 import path from 'path';
@@ -27,10 +26,12 @@ class ServerApp {
     this.app.use('/static', express.static('dist/static'));
   }
 
-  private routesInit(): void {
+  private async routesInit(): Promise<void> {
     this.app.get('*', async (req, res) => {
       const helmetContext: FilledContext | object = {};
       const routerContext: RawRouterContext = {};
+
+      await loadModules(routes);
 
       const reactApp = renderToString(
         <RouterProvider context={routerContext} routesConfig={routes} staticPath={req.originalUrl}>

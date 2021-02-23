@@ -22,12 +22,12 @@ const HtmlBoilerplate: FC<HtmlBoilerplateProps> = ({
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
         {helmet.script.toComponent()}
-      </head>
-      <body {...helmet.bodyAttributes.toComponent()}>
-        <div dangerouslySetInnerHTML={{ __html: children }} id="root" />
         {scripts.map((src, index) => (
           <script defer key={index} src={src} />
         ))}
+      </head>
+      <body {...helmet.bodyAttributes.toComponent()}>
+        <div dangerouslySetInnerHTML={{ __html: children }} id="root" />
       </body>
     </html>
   );
