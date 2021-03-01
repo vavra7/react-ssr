@@ -13,6 +13,8 @@ export const clientProdConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist/static'),
     filename: '[name].[contenthash].js',
+    chunkFilename: pathName =>
+      pathName.chunk?.name ? '[name].[contenthash].js' : 'chunk.[contenthash].js',
     publicPath: '/static/'
   },
   module: {

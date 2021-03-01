@@ -16,6 +16,6 @@ export const routes: RoutesConfig<Route> = [
   {
     path: '/test2',
     name: Route.Test2,
-    module: () => import('../views/Test2')
+    module: () => import('../views/Test2' /* webpackChunkName: "test2" */)
   }
 ];

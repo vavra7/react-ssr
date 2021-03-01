@@ -19,6 +19,7 @@ export const clientDevConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist/static'),
     filename: '[name].js',
+    chunkFilename: '[id].js',
     publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}/static/`,
     hotUpdateMainFilename: 'updates/[fullhash].hot-update.json',
     hotUpdateChunkFilename: 'updates/[id].[fullhash].hot-update.js'

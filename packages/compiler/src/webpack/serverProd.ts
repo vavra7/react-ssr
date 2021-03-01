@@ -13,7 +13,8 @@ export const serverProdConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: '/static/',
-    filename: 'index.js'
+    filename: 'index.js',
+    chunkFilename: pathName => (pathName.chunk?.name ? '[name].[id].js' : 'chunk.[id].js')
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
   module: {

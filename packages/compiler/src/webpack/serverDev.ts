@@ -15,6 +15,7 @@ export const serverDevConfig: Configuration = {
   output: {
     path: path.resolve(process.cwd(), 'dist'),
     filename: 'index.js',
+    chunkFilename: '[id].js',
     publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}/static/`
   },
   externals: [nodeExternals(), { express: 'commonjs express' }],
