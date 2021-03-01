@@ -1,21 +1,34 @@
 import { RoutesConfig } from '@react-ssr/router';
 
-import Test1 from '../views/Test1';
+import NotFound from '../views/NotFound';
+import SignIn from '../views/SignIn';
 
 export enum Route {
-  Test1 = 'test1',
-  Test2 = 'test2'
+  SignUp = 'signUp',
+  SignIn = 'signIn',
+  App = 'app',
+  NotFound = 'notFound'
 }
 
 export const routes: RoutesConfig<Route> = [
   {
-    path: '/',
-    name: Route.Test1,
-    component: Test1
+    path: '/sign-up',
+    name: Route.SignUp,
+    loadComponent: () => import('../views/SignUp' /* webpackChunkName: "signUp"*/)
   },
   {
-    path: '/test2',
-    name: Route.Test2,
-    module: () => import('../views/Test2' /* webpackChunkName: "test2" */)
+    path: '/sign-in',
+    name: Route.SignIn,
+    component: SignIn
+  },
+  {
+    path: '/',
+    name: Route.App,
+    loadComponent: () => import('../views/app/index' /* webpackChunkName: "app" */)
+  },
+  {
+    path: '*',
+    name: Route.NotFound,
+    component: NotFound
   }
 ];

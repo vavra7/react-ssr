@@ -3,11 +3,11 @@ import { FC, useEffect, useState } from 'react';
 import { RouteConfig } from '../types';
 
 interface DynamicRouteProps {
-  module?: RouteConfig['module'];
+  loadComponent?: RouteConfig['loadComponent'];
   component?: RouteConfig['component'];
 }
 
-const DynamicRoute: FC<DynamicRouteProps> = ({ component, module }) => {
+const DynamicRoute: FC<DynamicRouteProps> = ({ component, loadComponent }) => {
   const [Component, setComponent] = useState<any>(component);
 
   useEffect(() => {
@@ -15,10 +15,10 @@ const DynamicRoute: FC<DynamicRouteProps> = ({ component, module }) => {
       setComponent(component);
     } else {
       (async () => {
-        setComponent((await module!()).default);
+        setComponent((await loadComponent!()).default);
       })();
     }
-  }, [component]);
+  }, [component, loadComponent]);
 
   if (Component) {
     return Component;

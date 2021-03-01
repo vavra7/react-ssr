@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import favicon from './assets/images/favicon.png';
-import Layout from './components/Layout';
 
 export interface AppProps {}
 
@@ -19,9 +18,7 @@ const App: FC<AppProps> = () => {
 
       <div>global alerts</div>
 
-      <Layout>
-        <RouterView />
-      </Layout>
+      <RouterView />
     </>
   );
 };

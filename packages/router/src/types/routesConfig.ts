@@ -1,17 +1,22 @@
 import { ComponentType } from 'react';
-
-import { RequireAtLeastOne } from './RequireAtLeastOne';
+import UrlPattern from 'url-pattern';
 
 interface BaseConfig<Name = string> {
-  path: `/${string}`;
+  path: `/${string}` | '*';
   name: Name;
   component?: ComponentType;
-  module?: () => Promise<{ default: ComponentType }>;
+  loadComponent?: () => Promise<{ default: ComponentType }>;
 }
 
-export type RouteConfig<Name = string> = RequireAtLeastOne<
-  BaseConfig<Name>,
-  'component' | 'module'
->;
+export interface RouteConfig<Name = string> extends BaseConfig<Name> {
+  children?: RouteConfig<Name>[];
+}
+
+export interface BuiltRouteConfig extends BaseConfig {
+  children?: BuiltRouteConfig[];
+  urlPattern: UrlPattern;
+}
 
 export type RoutesConfig<Name = string> = RouteConfig<Name>[];
+
+export type BuiltRoutesConfig = BuiltRouteConfig[];

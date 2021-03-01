@@ -1,8 +1,8 @@
 import { RouteConfig, RoutesConfig } from '../types';
 
 async function promiseComponent(routeConfig: RouteConfig): Promise<void> {
-  if (!routeConfig.module) throw new ReferenceError('Missing module to import.');
-  routeConfig.component = (await routeConfig.module()).default;
+  if (!routeConfig.loadComponent) throw new ReferenceError('Missing module to import.');
+  routeConfig.component = (await routeConfig.loadComponent()).default;
 }
 
 export async function loadModules(routesConfig: RoutesConfig): Promise<void> {
