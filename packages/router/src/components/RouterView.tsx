@@ -6,10 +6,15 @@ import DynamicRoute from './DynamicRoute';
 export interface RouterViewProps {}
 
 const RouterView: FC<RouterViewProps> = () => {
-  const { routeConfig } = useRouter();
+  const { match } = useRouter();
+
+  console.log('RouterView - match', match);
 
   return (
-    <DynamicRoute component={routeConfig?.component} loadComponent={routeConfig?.loadComponent} />
+    <DynamicRoute
+      component={match?.configs?.[0]?.component}
+      loadComponent={match?.configs?.[0]?.loadComponent}
+    />
   );
 };
 

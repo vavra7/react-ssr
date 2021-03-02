@@ -1,6 +1,6 @@
 import { Matcher } from '../services';
 import { LocationHook, Navigate } from './locationHook';
-import { RouteConfig } from './routesConfig';
+import { BuiltRouteConfig } from './routesConfig';
 
 export interface TRouterContext {
   staticPath?: string;
@@ -10,9 +10,14 @@ export interface TRouterContext {
 
 export type RawRouterContext = Partial<TRouterContext>;
 
+export interface Match {
+  configs: BuiltRouteConfig[];
+  params: Record<string, any>;
+}
+
 export interface Router {
   path: string;
   navigate: Navigate;
-  routeConfig: RouteConfig | null;
+  match: Match;
   matcher: Matcher;
 }

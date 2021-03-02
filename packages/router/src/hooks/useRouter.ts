@@ -15,10 +15,12 @@ export function useRouter(): Router {
     staticPath: context.staticPath
   });
 
+  const match = context.matcher.getMatch(path);
+
   return {
     path,
     navigate,
     matcher: context.matcher,
-    routeConfig: context.matcher.getRouteConfig(path)
+    match
   };
 }

@@ -13,7 +13,7 @@ const DynamicRoute: FC<DynamicRouteProps> = ({ component, loadComponent }) => {
   useEffect(() => {
     if (component) {
       setComponent(component);
-    } else {
+    } else if (loadComponent) {
       (async () => {
         setComponent((await loadComponent!()).default);
       })();
