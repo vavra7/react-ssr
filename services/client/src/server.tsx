@@ -22,6 +22,14 @@ class ServerApp {
     );
   }
 
+  public start(): void {
+    this.beforeRoutesInit();
+    this.routesInit();
+    this.app.listen(config.port, () => {
+      console.log(`ready - started FE server on ${config.baseUrl}`);
+    });
+  }
+
   private beforeRoutesInit(): void {
     this.app.use('/static', express.static('dist/static'));
   }
@@ -52,14 +60,6 @@ class ServerApp {
           </HtmlBoilerplate>
         );
       res.send(html);
-    });
-  }
-
-  public start(): void {
-    this.beforeRoutesInit();
-    this.routesInit();
-    this.app.listen(config.port, () => {
-      console.log(`ready - started FE server on ${config.baseUrl}`);
     });
   }
 }

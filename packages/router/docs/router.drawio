@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2021-02-22T18:26:08.688Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="3wbm8oBgCIecxjPav8d6" version="14.2.4" type="embed">
+<mxfile host="65bd71144e" modified="2021-03-03T12:32:40.719Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="mE2djxLN05wG48PWMdeO" version="14.2.4" type="embed">
     <diagram id="_YIK-AuZUHdV7MpziC5e" name="Router">
-        <mxGraphModel dx="480" dy="687" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1238" dy="950" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -34,6 +34,15 @@
                         <mxPoint x="435" y="565" as="sourcePoint"/>
                         <mxPoint x="485" y="515" as="targetPoint"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center ; text-decoration: underline&quot;&gt;&lt;b&gt;Router&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;path&lt;/li&gt;&lt;li&gt;navigate&lt;/li&gt;&lt;li&gt;configs&lt;/li&gt;&lt;li&gt;params&lt;/li&gt;&lt;li&gt;loading&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="730" width="160" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="12" target="12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center ; text-decoration: underline&quot;&gt;&lt;b&gt;RouterMatch&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&lt;ul&gt;&lt;li&gt;configs&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="190" y="730" width="160" height="90" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

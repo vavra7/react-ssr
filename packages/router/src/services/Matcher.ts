@@ -10,24 +10,28 @@ export class Matcher {
   }
 
   public getPath(rawLocation: RawLocation): string | null {
-    const match = this.getMatch(rawLocation);
-    if (!match.configs.length) {
-      console.warn('Path was not found for:', rawLocation);
-      return null;
-    }
-    const getChildConfig = (_config: BuiltRouteConfig): BuiltRouteConfig => {
-      if (!_config.children || !_config.children.length) {
-        return _config;
-      } else {
-        return getChildConfig(_config.children![0]);
+    if (typeof rawLocation === 'string') {
+      return rawLocation;
+    } else {
+      const match = this.getMatchByName(rawLocation.name, rawLocation.params);
+      if (!match.configs.length) {
+        console.warn('Path was not found for:', rawLocation);
+        return null;
       }
-    };
-    const config = getChildConfig(match.configs[match.configs.length - 1]);
-    try {
-      return config.urlPattern.stringify(match.params);
-    } catch (err) {
-      console.warn('Invalid params provided for:', rawLocation, err);
-      return null;
+      const getChildConfig = (_config: BuiltRouteConfig): BuiltRouteConfig => {
+        if (!_config.children || !_config.children.length) {
+          return _config;
+        } else {
+          return getChildConfig(_config.children![0]);
+        }
+      };
+      const config = getChildConfig(match.configs[match.configs.length - 1]);
+      try {
+        return config.urlPattern.stringify(match.params);
+      } catch (err) {
+        console.warn('Invalid params provided for:', rawLocation, err);
+        return null;
+      }
     }
   }
 
