@@ -8,8 +8,6 @@ export interface RouterViewProps {}
 const RouterView: FC<RouterViewProps> = () => {
   const { match } = useRouter();
 
-  console.log('RouterView - match', match);
-
   return (
     <DynamicRoute
       component={match?.configs?.[0]?.component}

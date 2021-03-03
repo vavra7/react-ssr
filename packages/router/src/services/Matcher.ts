@@ -10,17 +10,32 @@ export class Matcher {
   }
 
   public getPath(rawLocation: RawLocation): string | null {
-    // const routeConfig = this.getRouteConfig(rawLocation);
-    // if (routeConfig) return routeConfig.path;
-    // else return null;
-    return 'todo';
+    const match = this.getMatch(rawLocation);
+    if (!match.configs.length) {
+      console.warn('Path was not found for:', rawLocation);
+      return null;
+    }
+    const getChildConfig = (_config: BuiltRouteConfig): BuiltRouteConfig => {
+      if (!_config.children || !_config.children.length) {
+        return _config;
+      } else {
+        return getChildConfig(_config.children![0]);
+      }
+    };
+    const config = getChildConfig(match.configs[match.configs.length - 1]);
+    try {
+      return config.urlPattern.stringify(match.params);
+    } catch (err) {
+      console.warn('Invalid params provided for:', rawLocation, err);
+      return null;
+    }
   }
 
   public getMatch(rawLocation: RawLocation): Match {
     if (typeof rawLocation === 'string') {
       return this.getMatchByPath(rawLocation);
     } else {
-      return this.getMatchByName(rawLocation.name);
+      return this.getMatchByName(rawLocation.name, rawLocation.params);
     }
   }
 
@@ -47,13 +62,22 @@ export class Matcher {
     return { configs: matchedConfigs, params: matchedParams };
   }
 
-  private getMatchByName(name: string): Match {
-    const configs: BuiltRouteConfig[] = [];
-    // for (const routeConfig of this.routesConfig) {
-    //   if (routeConfig.name === name) return routeConfig;
-    // }
-    // return null;
-    return { configs: [], params: {} };
+  private getMatchByName(name: string, params: Record<string, any> = {}): Match {
+    let matchedConfigs: Match['configs'] = [];
+    const findMatch = (configs: BuiltRoutesConfig, prevConfigs: Match['configs'] = []): boolean => {
+      for (const config of configs) {
+        if (config.name === name) {
+          matchedConfigs = [...prevConfigs, config];
+          return true;
+        } else if (config.children) {
+          const success = findMatch(config.children, [...prevConfigs, config]);
+          if (success) return true;
+        }
+      }
+      return false;
+    };
+    findMatch(this.builtRoutesConfig);
+    return { configs: matchedConfigs, params };
   }
 
   private buildRoutesConfig(routesConfig: RoutesConfig, prevPath = '/'): BuiltRoutesConfig {

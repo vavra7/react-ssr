@@ -86,6 +86,22 @@ export const routes: RoutesConfig<Route, Meta> = [
         }
       },
       {
+        path: '/listing/new',
+        name: Route.AppNewListing,
+        component: Listing,
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: '/listing/:id',
+        name: Route.AppListing,
+        component: Listing,
+        meta: {
+          auth: false
+        }
+      },
+      {
         path: '/about',
         name: Route.AppAbout,
         component: About,
@@ -94,22 +110,6 @@ export const routes: RoutesConfig<Route, Meta> = [
         }
       }
     ],
-    meta: {
-      auth: false
-    }
-  },
-  {
-    path: '/listing/new',
-    name: Route.AppNewListing,
-    component: Listing,
-    meta: {
-      auth: true
-    }
-  },
-  {
-    path: '/listing/:id',
-    name: Route.AppListing,
-    component: Listing,
     meta: {
       auth: false
     }
