@@ -1,4 +1,4 @@
-import { loadModules, RawRouterContext, RouterProvider } from '@react-ssr/router';
+import { preloadComponents, RawRouterContext, RouterProvider } from '@react-ssr/router';
 import express, { Application } from 'express';
 import fs from 'fs';
 import path from 'path';
@@ -14,6 +14,7 @@ import { routes } from './router/routes';
 class ServerApp {
   private app: Application;
   private manifest: Record<string, string>;
+  private preloadedRouterContext: RawRouterContext | undefined;
 
   constructor() {
     this.app = express();
@@ -22,24 +23,23 @@ class ServerApp {
     );
   }
 
-  public start(): void {
-    this.beforeRoutesInit();
+  public async start(): Promise<void> {
+    await this.beforeRoutesInit();
     this.routesInit();
     this.app.listen(config.port, () => {
       console.log(`ready - started FE server on ${config.baseUrl}`);
     });
   }
 
-  private beforeRoutesInit(): void {
+  private async beforeRoutesInit(): Promise<void> {
     this.app.use('/static', express.static('dist/static'));
+    this.preloadedRouterContext = await preloadComponents(routes);
   }
 
   private async routesInit(): Promise<void> {
     this.app.get('*', async (req, res) => {
       const helmetContext: FilledContext | object = {};
-      const routerContext: RawRouterContext = {};
-
-      await loadModules(routes);
+      const routerContext: RawRouterContext = this.preloadedRouterContext || {};
 
       const reactApp = renderToString(
         <RouterProvider context={routerContext} routesConfig={routes} staticPath={req.originalUrl}>

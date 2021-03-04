@@ -1,12 +1,10 @@
-import UrlPattern from 'url-pattern';
-
 import { BuiltRouteConfig, BuiltRoutesConfig, Match, RawLocation, RoutesConfig } from '../types';
 
 export class Matcher {
-  private builtRoutesConfig: BuiltRoutesConfig;
+  public builtRoutesConfig: BuiltRoutesConfig;
 
-  constructor(routesConfig: RoutesConfig) {
-    this.builtRoutesConfig = this.buildRoutesConfig(routesConfig);
+  constructor(builtRoutesConfig: BuiltRoutesConfig) {
+    this.builtRoutesConfig = builtRoutesConfig;
   }
 
   public getPath(rawLocation: RawLocation): string | null {
@@ -82,19 +80,5 @@ export class Matcher {
     };
     findMatch(this.builtRoutesConfig);
     return { configs: matchedConfigs, params };
-  }
-
-  private buildRoutesConfig(routesConfig: RoutesConfig, prevPath = '/'): BuiltRoutesConfig {
-    return routesConfig.map(routeConfig => {
-      const concatPath = prevPath.replace(/\/$/, '') + routeConfig.path;
-      return {
-        ...routeConfig,
-        concatPath,
-        children: routeConfig.children
-          ? this.buildRoutesConfig(routeConfig.children, concatPath)
-          : undefined,
-        urlPattern: new UrlPattern(concatPath)
-      };
-    });
   }
 }
