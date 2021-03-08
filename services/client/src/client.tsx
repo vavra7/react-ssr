@@ -1,18 +1,18 @@
 import 'reflect-metadata';
 
-import { preloadComponents, RawRouterContext, RouterProvider } from '@react-ssr/router';
+import { RouterProvider } from '@react-ssr/router';
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import App from './App';
-import { routes } from './router/routes';
+import { router } from './router';
 
 async function main(): Promise<void> {
-  const routerContext: RawRouterContext = await preloadComponents(routes, location.pathname);
+  await router.preloadComponents(location.pathname);
   ReactDOM.hydrate(
     <StrictMode>
-      <RouterProvider context={routerContext}>
+      <RouterProvider context={router}>
         <HelmetProvider>
           <App />
         </HelmetProvider>

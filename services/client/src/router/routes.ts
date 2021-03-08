@@ -1,9 +1,9 @@
 import { RoutesConfig } from '@react-ssr/router';
 
+import { Lang } from '../enums';
 import About from '../views/app/About';
 import Home from '../views/app/Home';
 import Listing from '../views/app/Listing';
-import Profile from '../views/app/profile';
 import Address from '../views/app/profile/Address';
 import NotFound from '../views/NotFound';
 import SignIn from '../views/SignIn';
@@ -26,9 +26,12 @@ interface Meta {
   auth: boolean;
 }
 
-export const routes: RoutesConfig<Route, Meta> = [
+export const routes: RoutesConfig<Route, Lang, Meta> = [
   {
-    path: '/sign-up',
+    path: {
+      en: '/sign-up',
+      cs: '/prihlaseni'
+    },
     name: Route.SignUp,
     loadComponent: () => import('../views/SignUp' /* webpackChunkName: "signUp"*/),
     meta: {
@@ -39,6 +42,9 @@ export const routes: RoutesConfig<Route, Meta> = [
     path: '/sign-in',
     name: Route.SignIn,
     component: SignIn,
+    beforeEnter: () => {
+      console.log('hi');
+    },
     meta: {
       auth: false
     }
@@ -57,9 +63,12 @@ export const routes: RoutesConfig<Route, Meta> = [
         }
       },
       {
-        path: '/profile',
+        path: {
+          en: '/profile',
+          cs: '/profil'
+        },
         name: Route.AppProfile,
-        component: Profile,
+        loadComponent: () => import('../views/app/profile' /* webpackChunkName: "appProfile" */),
         children: [
           {
             path: '/address',
@@ -94,7 +103,10 @@ export const routes: RoutesConfig<Route, Meta> = [
         }
       },
       {
-        path: '/listing/:id',
+        path: {
+          en: '/listing/:id',
+          cs: '/zaznam/:id'
+        },
         name: Route.AppListing,
         component: Listing,
         meta: {

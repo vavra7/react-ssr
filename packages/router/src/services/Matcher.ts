@@ -1,72 +1,120 @@
-import { BuiltRouteConfig, BuiltRoutesConfig, Match, RawLocation, RoutesConfig } from '../types';
+import UrlPattern from 'url-pattern';
+
+import {
+  BuiltRouteConfig,
+  BuiltRoutesConfig,
+  isLocalizedPaths,
+  isPathString,
+  Location
+} from '../types';
+
+export interface Match {
+  name: string | null;
+  path: string | null;
+  urlPattern: UrlPattern | null;
+  lang: string | null;
+  config: BuiltRouteConfig | null;
+  allConfigs: BuiltRouteConfig[];
+  params: Record<string, any>;
+}
 
 export class Matcher {
   public builtRoutesConfig: BuiltRoutesConfig;
+  // TODO: language
+  public lang = 'en';
 
   constructor(builtRoutesConfig: BuiltRoutesConfig) {
     this.builtRoutesConfig = builtRoutesConfig;
   }
 
-  public getPath(rawLocation: RawLocation): string | null {
-    if (typeof rawLocation === 'string') {
-      return rawLocation;
+  public getPath(location: Location): string | null {
+    if (typeof location === 'string') {
+      return location;
     } else {
-      const match = this.getMatchByName(rawLocation.name, rawLocation.params);
-      if (!match.configs.length) {
-        console.warn('Path was not found for:', rawLocation);
+      const match = this.getMatchByName(location.name, location.params, location.lang || this.lang);
+      if (!match.config || !match.urlPattern) {
+        console.warn('Path was not found for:', location);
         return null;
       }
-      const getChildConfig = (_config: BuiltRouteConfig): BuiltRouteConfig => {
-        if (!_config.children || !_config.children.length) {
-          return _config;
-        } else {
-          return getChildConfig(_config.children![0]);
-        }
-      };
-      const config = getChildConfig(match.configs[match.configs.length - 1]);
       try {
-        return config.urlPattern.stringify(match.params);
+        return match.urlPattern.stringify(match.params);
       } catch (err) {
-        console.warn('Invalid params provided for:', rawLocation, err);
+        console.warn('Invalid params provided for:', location, err);
         return null;
       }
     }
   }
 
-  public getMatch(rawLocation: RawLocation): Match {
-    if (typeof rawLocation === 'string') {
-      return this.getMatchByPath(rawLocation);
+  public getMatch(location: Location): Match {
+    if (typeof location === 'string') {
+      return this.getMatchByPath(location);
     } else {
-      return this.getMatchByName(rawLocation.name, rawLocation.params);
+      return this.getMatchByName(location.name, location.params, location.lang || this.lang);
     }
   }
 
   private getMatchByPath(path: string): Match {
-    let matchedConfigs: Match['configs'] = [];
+    let matchedConfigs: Match['allConfigs'] = [];
     let matchedParams: Match['params'] = {};
-    const findMatch = (configs: BuiltRoutesConfig, prevConfigs: Match['configs'] = []): boolean => {
+    let matchedUrlPattern: Match['urlPattern'] = null;
+    let matchedLang: Match['lang'] = null;
+    const findMatch = (
+      configs: BuiltRoutesConfig,
+      prevConfigs: Match['allConfigs'] = []
+    ): boolean => {
       for (const config of configs) {
         if (config.children) {
           const success = findMatch(config.children, [...prevConfigs, config]);
           if (success) return true;
         } else {
-          const _matchedParams = config.urlPattern.match(path);
-          if (_matchedParams) {
-            matchedConfigs = [...prevConfigs, config];
-            matchedParams = _matchedParams;
-            return true;
+          if (config.urlPatterns instanceof UrlPattern) {
+            const _matchedParams = config.urlPatterns.match(path);
+            if (_matchedParams) {
+              matchedConfigs = [...prevConfigs, config];
+              matchedParams = _matchedParams;
+              matchedUrlPattern = config.urlPatterns;
+              return true;
+            }
+          } else {
+            let _matchedParams: Match['params'] | null = null;
+            for (const [lang, urlPattern] of Object.entries(config.urlPatterns)) {
+              if ((_matchedParams = urlPattern.match(path))) {
+                matchedConfigs = [...prevConfigs, config];
+                matchedParams = _matchedParams;
+                matchedLang = lang;
+                matchedUrlPattern = urlPattern;
+                return true;
+              }
+            }
           }
         }
       }
       return false;
     };
     findMatch(this.builtRoutesConfig);
-    return { configs: matchedConfigs, params: matchedParams };
+    const config = matchedConfigs.length ? matchedConfigs[matchedConfigs.length - 1] : null;
+    const name = config ? config.name : null;
+    return {
+      name,
+      path,
+      urlPattern: matchedUrlPattern,
+      lang: matchedLang,
+      config,
+      allConfigs: matchedConfigs,
+      params: matchedParams
+    };
   }
 
-  private getMatchByName(name: string, params: Record<string, any> = {}): Match {
-    let matchedConfigs: Match['configs'] = [];
-    const findMatch = (configs: BuiltRoutesConfig, prevConfigs: Match['configs'] = []): boolean => {
+  private getMatchByName(
+    name: string,
+    params: Record<string, any> = {},
+    lang: string | null = null
+  ): Match {
+    let matchedConfigs: Match['allConfigs'] = [];
+    const findMatch = (
+      configs: BuiltRoutesConfig,
+      prevConfigs: Match['allConfigs'] = []
+    ): boolean => {
       for (const config of configs) {
         if (config.name === name) {
           matchedConfigs = [...prevConfigs, config];
@@ -79,6 +127,42 @@ export class Matcher {
       return false;
     };
     findMatch(this.builtRoutesConfig);
-    return { configs: matchedConfigs, params };
+    const config = matchedConfigs.length ? matchedConfigs[matchedConfigs.length - 1] : null;
+    const _name = config ? config.name : null;
+    const _lang =
+      lang && config && isLocalizedPaths(config.concatPath) && lang in config.concatPath
+        ? lang
+        : null;
+    const path = (() => {
+      let _path: Match['path'] = null;
+      if (config) {
+        if (isPathString(config.path)) {
+          _path = config.path;
+        } else if (_lang && config.path[_lang]) {
+          _path = config.path[_lang]!;
+        }
+      }
+      return _path;
+    })();
+    const urlPattern = (() => {
+      let _urlPattern: Match['urlPattern'] = null;
+      if (config?.urlPatterns) {
+        if (config.urlPatterns instanceof UrlPattern) {
+          _urlPattern = config.urlPatterns;
+        } else if (_lang && config.urlPatterns[_lang]) {
+          _urlPattern = config.urlPatterns[_lang]!;
+        }
+      }
+      return _urlPattern;
+    })();
+    return {
+      name: _name,
+      urlPattern,
+      path,
+      lang: _lang,
+      config,
+      allConfigs: matchedConfigs,
+      params
+    };
   }
 }

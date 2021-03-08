@@ -1,9 +1,8 @@
 import { HistoryEvent } from '../enums';
 
 /**
- * While History API doesn't have `popstate` event, the only
- * proper way to listen to changes via `push/replaceState`
- * is to monkey-patch these methods.
+ * While History API doesn't have pop/push events, the only
+ * proper way to listen to changes is to monkey-patch these methods.
  */
 export function addHistoryEvents(): void {
   if (typeof history === 'undefined') return;

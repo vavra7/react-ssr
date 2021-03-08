@@ -1,35 +1,55 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { HistoryEvent } from '../enums';
-import { LocationHook, Navigate } from '../types';
+import { LocationHook, LocationPush, LocationReplace, LocationState } from '../types';
 
-export const useLocation: LocationHook = ({ matcher } = {}) => {
-  const [path, updatePath] = useState<string>(() => location.pathname);
-  let { current: prevPath } = useRef<string>(path);
+export const useLocation: LocationHook = (matcher, staticPath) => {
+  const _path = staticPath || location.pathname;
+  const [locationState, updateLocationState] = useState<LocationState>(() => ({
+    path: _path,
+    ...matcher.getMatch(_path)
+  }));
+  let { current: prevLocationState } = useRef<LocationState>(locationState);
 
   useEffect(() => {
     const checkForUpdates = (): void => {
       const newPath = location.pathname;
-      prevPath !== newPath && updatePath((prevPath = newPath));
+      if (prevLocationState.path !== newPath) {
+        const newLocationState: LocationState = { path: newPath, ...matcher.getMatch(newPath) };
+        updateLocationState(newLocationState);
+        prevLocationState = newLocationState;
+      }
     };
     Object.values(HistoryEvent).forEach(e => addEventListener(e, checkForUpdates));
     checkForUpdates();
     return () => Object.values(HistoryEvent).forEach(e => removeEventListener(e, checkForUpdates));
   }, []);
 
-  const navigate = useCallback<Navigate>(
-    (to, { replace = false } = {}) => {
-      if (!matcher) throw new ReferenceError('Matcher was not passed to the location hook.');
+  const push = useCallback<LocationPush>(
+    to => {
       const newPath = matcher.getPath(to);
+      console.log(prevLocationState);
       if (!newPath) return;
-      if (replace) {
-        history.replaceState(null, '', newPath);
-      } else {
-        history.pushState(null, '', newPath);
-      }
+      else history.pushState(null, '', newPath);
     },
     [matcher]
   );
 
-  return [path, navigate];
+  const replace = useCallback<LocationReplace>(
+    to => {
+      const newPath = matcher.getPath(to);
+      if (!newPath) return;
+      else history.replaceState(null, '', newPath);
+    },
+    [matcher]
+  );
+
+  return {
+    push,
+    replace,
+    name: locationState.allConfigs[locationState.allConfigs.length - 1]?.name || '',
+    path: locationState.path,
+    allConfigs: locationState.allConfigs,
+    params: locationState.params
+  };
 };

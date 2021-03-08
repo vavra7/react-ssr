@@ -1,18 +1,20 @@
 import React, { FC } from 'react';
 
-import { useRouter } from '../hooks';
-import DynamicRoute from './DynamicRoute';
+import { ViewsConfigsContext } from '../context/viewsConfigsContext';
+import View from './View';
 
 export interface RouterViewProps {}
 
 const RouterView: FC<RouterViewProps> = () => {
-  const { match } = useRouter();
-
+  console.log('rendering... (RouterView)');
   return (
-    <DynamicRoute
-      component={match?.configs?.[0]?.component}
-      loadComponent={match?.configs?.[0]?.loadComponent}
-    />
+    <ViewsConfigsContext.Consumer>
+      {configs => (
+        <ViewsConfigsContext.Provider value={configs.slice(1)}>
+          {configs[0] && <View config={configs[0]} />}
+        </ViewsConfigsContext.Provider>
+      )}
+    </ViewsConfigsContext.Consumer>
   );
 };
 

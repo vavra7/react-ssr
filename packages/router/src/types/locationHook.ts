@@ -1,12 +1,18 @@
-import { Matcher } from '../services';
-import { RawLocation } from './locations';
-import { TRouterContext } from './router';
+import { Match, Matcher } from '../services/Matcher';
+import { Location } from './Location';
 
-export type Navigate = (to: RawLocation, options?: { replace?: boolean }) => void;
+export type LocationPush = (to: Location) => void;
+export type LocationReplace = (to: Location) => void;
+export type LocationState = Match;
 
-export interface LocationHookProps {
-  matcher?: Matcher;
-  staticPath?: TRouterContext['staticPath'];
-}
-
-export type LocationHook = (props?: LocationHookProps) => [path: string, navigate: Navigate];
+export type LocationHook = (
+  matcher: Matcher,
+  staticPath?: string
+) => {
+  push: LocationPush;
+  replace: LocationReplace;
+  name: string;
+  path: LocationState['path'];
+  allConfigs: LocationState['allConfigs'];
+  params: LocationState['params'];
+};

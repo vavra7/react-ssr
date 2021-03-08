@@ -1,11 +1,10 @@
 import Link from './components/Link';
 import RouterProvider from './components/RouterProvider';
 import RouterView from './components/RouterView';
-import { addHistoryEvents, preloadComponents } from './utils';
+import { useRoute } from './context/routeContext';
+import { useRouter } from './context/routerDispatchContext';
+import { Router } from './services/Router';
 
-addHistoryEvents();
-
-export * from './hoc';
 export * from './hooks';
 export * from './types';
-export { Link, preloadComponents, RouterProvider, RouterView };
+export { Link, Router, RouterProvider, RouterView, useRoute, useRouter };

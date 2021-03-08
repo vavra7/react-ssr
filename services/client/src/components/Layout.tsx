@@ -37,7 +37,10 @@ const Layout: FC = ({ children }) => {
               <Link to={{ name: Route.AppNewListing }}>new listing</Link>
             </li>
             <li>
-              <Link to={{ name: Route.AppListing, params: { id: 45 } }}>listing</Link>
+              <Link to={{ name: Route.AppListing, params: { id: 45 } }}>listing 45</Link>
+            </li>
+            <li>
+              <Link to={{ name: Route.AppListing, params: { id: 46 } }}>listing 46</Link>
             </li>
           </ul>
         </li>

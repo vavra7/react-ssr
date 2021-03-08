@@ -1,30 +1,30 @@
 import React, { FC, MouseEvent, ReactNode, useCallback, useMemo } from 'react';
 
-import { useRouter } from '../hooks';
-import { RawLocation } from '../types';
+import { useRouter } from '../context/routerDispatchContext';
+import { Location } from '../types';
 
 export interface LinkProps {
   children: ReactNode;
-  to: RawLocation;
+  to: Location;
 }
 
 const Link: FC<LinkProps> = ({ children, to }) => {
-  const router = useRouter();
+  const { matcher, push } = useRouter();
 
   const href = useMemo<string | undefined>(() => {
-    const path = router.matcher.getPath(to);
+    const path = matcher.getPath(to);
     if (path) return path;
     else return undefined;
-  }, [to]);
+  }, [to, matcher]);
 
   const handleClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>): void => {
       if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.button !== 0)
         return;
       event.preventDefault();
-      if (href) router.navigate(href);
+      if (href) push(href);
     },
-    [router, href]
+    [push, href]
   );
 
   return (
