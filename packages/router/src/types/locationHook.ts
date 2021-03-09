@@ -11,8 +11,4 @@ export type LocationHook = (
 ) => {
   push: LocationPush;
   replace: LocationReplace;
-  name: string;
-  path: LocationState['path'];
-  allConfigs: LocationState['allConfigs'];
-  params: LocationState['params'];
-};
+} & LocationState;

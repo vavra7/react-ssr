@@ -1,21 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { HistoryEvent } from '../enums';
+import { Matcher } from '../services/Matcher';
 import { LocationHook, LocationPush, LocationReplace, LocationState } from '../types';
+import { addHistoryEvents } from '../utils/addHistoryEvents';
+
+addHistoryEvents();
+
+function getLocationState(matcher: Matcher, path: string): LocationState {
+  const match = matcher.getMatch(path);
+  if (!match) {
+    throw new Error(`No match for path: ${path}`);
+  }
+  return match;
+}
 
 export const useLocation: LocationHook = (matcher, staticPath) => {
   const _path = staticPath || location.pathname;
-  const [locationState, updateLocationState] = useState<LocationState>(() => ({
-    path: _path,
-    ...matcher.getMatch(_path)
-  }));
+  const [locationState, updateLocationState] = useState<LocationState>(() =>
+    getLocationState(matcher, _path)
+  );
   let { current: prevLocationState } = useRef<LocationState>(locationState);
 
   useEffect(() => {
     const checkForUpdates = (): void => {
       const newPath = location.pathname;
       if (prevLocationState.path !== newPath) {
-        const newLocationState: LocationState = { path: newPath, ...matcher.getMatch(newPath) };
+        const newLocationState: LocationState = getLocationState(matcher, newPath);
         updateLocationState(newLocationState);
         prevLocationState = newLocationState;
       }
@@ -28,7 +39,6 @@ export const useLocation: LocationHook = (matcher, staticPath) => {
   const push = useCallback<LocationPush>(
     to => {
       const newPath = matcher.getPath(to);
-      console.log(prevLocationState);
       if (!newPath) return;
       else history.pushState(null, '', newPath);
     },
@@ -47,9 +57,6 @@ export const useLocation: LocationHook = (matcher, staticPath) => {
   return {
     push,
     replace,
-    name: locationState.allConfigs[locationState.allConfigs.length - 1]?.name || '',
-    path: locationState.path,
-    allConfigs: locationState.allConfigs,
-    params: locationState.params
+    ...locationState
   };
 };

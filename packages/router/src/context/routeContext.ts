@@ -2,11 +2,8 @@ import { createContext, useContext } from 'react';
 
 import { LocationState } from '../types';
 
-export interface Route {
-  name: string;
-  path: LocationState['path'];
-  allConfigs: LocationState['allConfigs'];
-  params: LocationState['params'];
+export interface Route extends LocationState {
+  loading: boolean;
 }
 
 export const RouteContext = createContext<Route | undefined>(undefined);

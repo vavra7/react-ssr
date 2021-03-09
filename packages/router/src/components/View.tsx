@@ -7,7 +7,6 @@ export interface ViewProps {
 }
 
 const View: FC<ViewProps> = ({ config }) => {
-  console.log('rendering... (View)');
   return createElement(config.component!);
 };
 

@@ -42,9 +42,6 @@ export const routes: RoutesConfig<Route, Lang, Meta> = [
     path: '/sign-in',
     name: Route.SignIn,
     component: SignIn,
-    beforeEnter: () => {
-      console.log('hi');
-    },
     meta: {
       auth: false
     }

@@ -6,7 +6,6 @@ import View from './View';
 export interface RouterViewProps {}
 
 const RouterView: FC<RouterViewProps> = () => {
-  console.log('rendering... (RouterView)');
   return (
     <ViewsConfigsContext.Consumer>
       {configs => (

@@ -6,7 +6,6 @@ import {
   RoutesConfig,
   UrlPatterns
 } from '../types';
-import { addHistoryEvents } from '../utils/addHistoryEvents';
 import { buildUrlPatterns } from '../utils/buildUrlPatterns';
 import { concatConfigPaths } from '../utils/concatConfigPaths';
 import { Loader } from './Loader';
@@ -16,7 +15,7 @@ export type NextFce = (args?: Location | boolean) => void;
 
 export type BeforeEachFce = (from: BuiltRouteConfig, to: BuiltRouteConfig, next: NextFce) => void;
 
-export class Router {
+export class Router<Lang extends string = string> {
   public builtRoutesConfig: BuiltRoutesConfig;
   public matcher: Matcher;
   public loader: Loader;
@@ -24,9 +23,12 @@ export class Router {
 
   constructor(routesConfig: RoutesConfig) {
     this.builtRoutesConfig = this.buildRoutesConfig(routesConfig);
-    this.matcher = new Matcher(this.builtRoutesConfig);
+    this.matcher = new Matcher<Lang>(this.builtRoutesConfig);
     this.loader = new Loader(this.builtRoutesConfig);
-    addHistoryEvents();
+  }
+
+  set defaultLang(lang: Lang) {
+    if (!this.matcher.lang) this.matcher.lang = lang;
   }
 
   public async preloadComponents(forPath?: string): Promise<void> {
@@ -34,7 +36,7 @@ export class Router {
       await this.loader.preloadAllConfigs();
     } else {
       const match = this.matcher.getMatch(forPath);
-      await this.loader.preloadMatchedConfigs(match.allConfigs);
+      if (match) await this.loader.preloadMatchedConfigs(match.allConfigs);
     }
   }
 

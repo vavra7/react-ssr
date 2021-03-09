@@ -1,27 +1,28 @@
 import UrlPattern from 'url-pattern';
 
-import {
-  BuiltRouteConfig,
-  BuiltRoutesConfig,
-  isLocalizedPaths,
-  isPathString,
-  Location
-} from '../types';
+import { BuiltRouteConfig, BuiltRoutesConfig, Location } from '../types';
+import { RouterCache } from './RouterCache';
 
 export interface Match {
-  name: string | null;
-  path: string | null;
-  urlPattern: UrlPattern | null;
+  name: string;
+  path: string;
+  urlPattern: UrlPattern;
   lang: string | null;
-  config: BuiltRouteConfig | null;
+  config: BuiltRouteConfig;
   allConfigs: BuiltRouteConfig[];
   params: Record<string, any>;
 }
 
-export class Matcher {
+interface ExtractedConfig {
+  urlPattern: Match['urlPattern'];
+  path: Match['path'];
+  params: Match['params'];
+  lang: Match['lang'];
+}
+
+export class Matcher<Lang extends string = string> {
   public builtRoutesConfig: BuiltRoutesConfig;
-  // TODO: language
-  public lang = 'en';
+  public lang: Lang | null = null;
 
   constructor(builtRoutesConfig: BuiltRoutesConfig) {
     this.builtRoutesConfig = builtRoutesConfig;
@@ -32,31 +33,30 @@ export class Matcher {
       return location;
     } else {
       const match = this.getMatchByName(location.name, location.params, location.lang || this.lang);
-      if (!match.config || !match.urlPattern) {
-        console.warn('Path was not found for:', location);
-        return null;
-      }
-      try {
-        return match.urlPattern.stringify(match.params);
-      } catch (err) {
-        console.warn('Invalid params provided for:', location, err);
-        return null;
-      }
+      return match ? match.path : null;
     }
   }
 
-  public getMatch(location: Location): Match {
+  public getMatch(location: Location): Match | null {
     if (typeof location === 'string') {
-      return this.getMatchByPath(location);
+      let match: Match | null;
+      match = RouterCache.getMatchByPath(location);
+      if (match) {
+        return match;
+      } else {
+        match = this.getMatchByPath(location);
+        RouterCache.setMatchByPath(location, match);
+        return match;
+      }
     } else {
       return this.getMatchByName(location.name, location.params, location.lang || this.lang);
     }
   }
 
-  private getMatchByPath(path: string): Match {
+  private getMatchByPath(path: string): Match | null {
     let matchedConfigs: Match['allConfigs'] = [];
     let matchedParams: Match['params'] = {};
-    let matchedUrlPattern: Match['urlPattern'] = null;
+    let matchedUrlPattern: Match['urlPattern'] | null = null;
     let matchedLang: Match['lang'] = null;
     const findMatch = (
       configs: BuiltRoutesConfig,
@@ -92,8 +92,16 @@ export class Matcher {
       return false;
     };
     findMatch(this.builtRoutesConfig);
-    const config = matchedConfigs.length ? matchedConfigs[matchedConfigs.length - 1] : null;
-    const name = config ? config.name : null;
+    if (!matchedConfigs.length) {
+      console.warn(`No config was found for path ${path}`);
+      return null;
+    }
+    const config = matchedConfigs[matchedConfigs.length - 1];
+    if (!matchedUrlPattern) {
+      console.warn(`No urlPattern was found for path ${path}`);
+      return null;
+    }
+    const name = config.name;
     return {
       name,
       path,
@@ -109,7 +117,7 @@ export class Matcher {
     name: string,
     params: Record<string, any> = {},
     lang: string | null = null
-  ): Match {
+  ): Match | null {
     let matchedConfigs: Match['allConfigs'] = [];
     const findMatch = (
       configs: BuiltRoutesConfig,
@@ -127,42 +135,57 @@ export class Matcher {
       return false;
     };
     findMatch(this.builtRoutesConfig);
-    const config = matchedConfigs.length ? matchedConfigs[matchedConfigs.length - 1] : null;
-    const _name = config ? config.name : null;
-    const _lang =
-      lang && config && isLocalizedPaths(config.concatPath) && lang in config.concatPath
-        ? lang
-        : null;
-    const path = (() => {
-      let _path: Match['path'] = null;
-      if (config) {
-        if (isPathString(config.path)) {
-          _path = config.path;
-        } else if (_lang && config.path[_lang]) {
-          _path = config.path[_lang]!;
-        }
-      }
-      return _path;
-    })();
-    const urlPattern = (() => {
-      let _urlPattern: Match['urlPattern'] = null;
-      if (config?.urlPatterns) {
-        if (config.urlPatterns instanceof UrlPattern) {
-          _urlPattern = config.urlPatterns;
-        } else if (_lang && config.urlPatterns[_lang]) {
-          _urlPattern = config.urlPatterns[_lang]!;
-        }
-      }
-      return _urlPattern;
-    })();
+    if (!matchedConfigs.length) {
+      console.warn(`No config was found for location ${name}`);
+      return null;
+    }
+    const config = matchedConfigs[matchedConfigs.length - 1];
+    const extractedConfig = this.extractConfig(config, params, lang);
+    if (!extractedConfig) {
+      console.warn(`Failed process config ${config.name}`);
+      return null;
+    }
     return {
-      name: _name,
-      urlPattern,
-      path,
-      lang: _lang,
+      name,
+      urlPattern: extractedConfig.urlPattern,
+      path: extractedConfig.path,
+      lang: extractedConfig.lang,
       config,
       allConfigs: matchedConfigs,
       params
+    };
+  }
+
+  private extractConfig(
+    config: BuiltRouteConfig,
+    params: Record<string, string>,
+    lang: string | null = null
+  ): ExtractedConfig | null {
+    let matchedLang: Match['lang'] = lang;
+    let matchedUrlPattern: Match['urlPattern'];
+    let matchedPath: Match['path'];
+    if (config.urlPatterns instanceof UrlPattern) {
+      matchedUrlPattern = config.urlPatterns;
+    } else if (matchedLang && config.urlPatterns[matchedLang]) {
+      matchedUrlPattern = config.urlPatterns[matchedLang];
+    } else if (matchedLang && !config.urlPatterns[matchedLang]) {
+      return null;
+    } else {
+      const [_lang, _urlPattern] = Object.entries(config.urlPatterns)[0];
+      matchedLang = _lang;
+      matchedUrlPattern = _urlPattern;
+    }
+    try {
+      matchedPath = matchedUrlPattern.stringify(params);
+    } catch (err) {
+      console.warn(`Invalid params provided for config ${config.name}`);
+      return null;
+    }
+    return {
+      path: matchedPath,
+      params,
+      urlPattern: matchedUrlPattern,
+      lang
     };
   }
 }

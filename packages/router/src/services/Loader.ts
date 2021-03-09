@@ -1,10 +1,20 @@
 import { BuiltRouteConfig, BuiltRoutesConfig } from '../types';
+import { RouterCache } from './RouterCache';
 
 export class Loader {
   public builtRoutesConfig: BuiltRoutesConfig;
 
   constructor(builtRoutesConfig: BuiltRoutesConfig) {
     this.builtRoutesConfig = builtRoutesConfig;
+  }
+
+  public checkAllIsLoaded(builtRoutesConfig: BuiltRouteConfig[]): boolean {
+    return !builtRoutesConfig.some(config => {
+      if (config.component) {
+        RouterCache.setLoadedRoute(config.name);
+      }
+      return !config.component;
+    });
   }
 
   /**
@@ -46,5 +56,6 @@ export class Loader {
     if (!builtRouteConfig.loadComponent)
       throw new ReferenceError(`Missing component to load for config: ${builtRouteConfig.name}`);
     builtRouteConfig.component = (await builtRouteConfig.loadComponent()).default;
+    RouterCache.setLoadedRoute(builtRouteConfig.name);
   }
 }

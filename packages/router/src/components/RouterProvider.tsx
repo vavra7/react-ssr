@@ -3,8 +3,10 @@ import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react';
 import { RouteContext } from '../context/routeContext';
 import { RouterDispatchContext } from '../context/routerDispatchContext';
 import { ViewsConfigsContext } from '../context/viewsConfigsContext';
-import { useLocation } from '../hooks';
+import { useIsComponentLoading } from '../hooks/useIsComponentLoading';
+import { useLocation } from '../hooks/useLocation';
 import { Router } from '../services/Router';
+import { RouterCache } from '../services/RouterCache';
 import { PreloadedRouteConfig } from '../types';
 
 interface PreloadedConfigsState {
@@ -23,12 +25,15 @@ const RouterProvider: FC<RouterProviderProps> = ({
   staticPath,
   context: { matcher, loader }
 }) => {
-  console.log('rendering... (RouterProvider)');
-  const { push, replace, path, allConfigs, params, name } = useLocation(matcher, staticPath);
+  const { push, replace, path, allConfigs, params, name, urlPattern, lang, config } = useLocation(
+    matcher,
+    staticPath
+  );
   const [preloadedConfigsState, setPreloadedConfigsState] = useState<PreloadedConfigsState>({
     name,
     allConfigs: allConfigs as PreloadedRouteConfig[]
   });
+  const { startLoading, finishLoading, isLoading } = useIsComponentLoading();
 
   const routerValue = useMemo(
     () => ({
@@ -42,7 +47,11 @@ const RouterProvider: FC<RouterProviderProps> = ({
   useEffect(() => {
     (async () => {
       if (preloadedConfigsState.name !== name) {
-        await loader.preloadMatchedConfigs(allConfigs);
+        if (!RouterCache.isRouteLoaded(name) && !loader.checkAllIsLoaded(allConfigs)) {
+          startLoading(name);
+          await loader.preloadMatchedConfigs(allConfigs);
+          finishLoading(name);
+        }
         setPreloadedConfigsState({
           name,
           allConfigs: allConfigs as PreloadedRouteConfig[]
@@ -53,7 +62,18 @@ const RouterProvider: FC<RouterProviderProps> = ({
 
   return (
     <RouterDispatchContext.Provider value={routerValue}>
-      <RouteContext.Provider value={{ name, path, allConfigs, params }}>
+      <RouteContext.Provider
+        value={{
+          name,
+          path,
+          allConfigs,
+          params,
+          urlPattern,
+          config,
+          lang,
+          loading: isLoading(name)
+        }}
+      >
         <ViewsConfigsContext.Provider value={preloadedConfigsState.allConfigs}>
           {children}
         </ViewsConfigsContext.Provider>

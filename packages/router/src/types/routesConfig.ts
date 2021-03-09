@@ -21,7 +21,6 @@ interface BaseConfig<Name extends string = string, Lang extends string = string>
   name: Name;
   component?: ComponentType;
   loadComponent?: () => Promise<{ default: ComponentType }>;
-  beforeEnter?: () => void;
   meta?: Record<string, any>;
 }
 

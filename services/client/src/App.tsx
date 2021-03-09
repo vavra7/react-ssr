@@ -3,12 +3,12 @@ import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import favicon from './assets/images/favicon.png';
+import RouteLoader from './components/RouteLoader';
 import { Route } from './router/routes';
 
 export interface AppProps {}
 
 const App: FC<AppProps> = () => {
-  console.log('rendering... (App)');
   return (
     <>
       <Helmet>
@@ -17,6 +17,8 @@ const App: FC<AppProps> = () => {
         <meta content="React SSR description" name="description" />
         <link href={favicon} rel="icon" type="image/png" />
       </Helmet>
+
+      <RouteLoader />
 
       <div>global alerts</div>
 

@@ -5,6 +5,5 @@ import { useRoute } from './context/routeContext';
 import { useRouter } from './context/routerDispatchContext';
 import { Router } from './services/Router';
 
-export * from './hooks';
 export * from './types';
 export { Link, Router, RouterProvider, RouterView, useRoute, useRouter };
