@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-ssr/compiler": "1.0.0",
     "@react-ssr/router": "1.0.0",
+    "@react-ssr/ui-components": "1.0.0",
     "express": "^4.17.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

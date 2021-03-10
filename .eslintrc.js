@@ -45,7 +45,6 @@ module.exports = {
         callbacksLast: false
       }
     ],
-    'react/button-has-type': 1,
     'react/no-deprecated': 1,
     'react/prefer-es6-class': [1, 'always'],
     'react/jsx-one-expression-per-line': [1, { allow: 'single-child' }],

@@ -1,0 +1,20 @@
+{
+  "name": "@react-ssr/ui-components",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
+    "storybook": "start-storybook -p 5555",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  },
+  "devDependencies": {
+    "@storybook/react": "^6.1.21"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./lib"
+  }
+}
