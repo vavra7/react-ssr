@@ -16,7 +16,7 @@ export const serverProdConfig: Configuration = {
     filename: 'index.js',
     chunkFilename: pathName => (pathName.chunk?.name ? '[name].[id].js' : 'chunk.[id].js')
   },
-  externals: [nodeExternals(), { express: 'commonjs express' }],
+  externals: [nodeExternals() as any, { express: 'commonjs express' }],
   module: {
     rules: [
       {

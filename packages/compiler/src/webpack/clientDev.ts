@@ -61,7 +61,7 @@ export const clientDevConfig: Configuration = {
   },
   plugins: [
     new HotModuleReplacementPlugin(),
-    new WebpackManifestPlugin({ fileName: 'manifest.json' }),
+    new WebpackManifestPlugin({ fileName: 'manifest.json' }) as any,
     new DefinePlugin({
       __SERVER__: false,
       __BROWSER__: true

@@ -18,7 +18,7 @@ export const serverDevConfig: Configuration = {
     chunkFilename: '[id].js',
     publicPath: `${WEBPACK_HOST}:${WEBPACK_PORT}/static/`
   },
-  externals: [nodeExternals(), { express: 'commonjs express' }],
+  externals: [nodeExternals() as any, { express: 'commonjs express' }],
   module: {
     rules: [
       {

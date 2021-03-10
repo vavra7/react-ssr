@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import path from 'path';
 import { Service } from 'typedi';
-import { Compiler, Configuration } from 'webpack';
+import { Configuration } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -33,7 +33,7 @@ export class WebpackServer {
    * @param clientConfig
    * @param clientCompiler
    */
-  public runWebpackMiddleware(clientConfig: Configuration, clientCompiler: Compiler): void {
+  public runWebpackMiddleware(clientConfig: Configuration, clientCompiler: any): void {
     let publicPath: any;
     if (typeof (publicPath = clientConfig.output?.publicPath) !== 'string')
       throw new ReferenceError('"clientConfig" must have defined output public path');
