@@ -3,7 +3,7 @@ import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react';
 import { RouteContext } from '../context/routeContext';
 import { RouterDispatchContext } from '../context/routerDispatchContext';
 import { ViewsConfigsContext } from '../context/viewsConfigsContext';
-import { useIsComponentLoading } from '../hooks/useIsComponentLoading';
+import { useIsRouteLoading } from '../hooks/useIsRouteLoading';
 import { useLocation } from '../hooks/useLocation';
 import { Router } from '../services/Router';
 import { RouterCache } from '../services/RouterCache';
@@ -33,7 +33,7 @@ const RouterProvider: FC<RouterProviderProps> = ({
     name,
     allConfigs: allConfigs as PreloadedRouteConfig[]
   });
-  const { startLoading, finishLoading, isLoading } = useIsComponentLoading();
+  const { startLoading, finishLoading, isLoading } = useIsRouteLoading();
 
   const routerValue = useMemo(
     () => ({

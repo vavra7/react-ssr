@@ -8,7 +8,7 @@ type Action = {
 type StartLoading = (name: string) => void;
 type FinishLoading = (name: string) => void;
 type IsLoading = (name: string) => boolean;
-type ComponentIsLoadingHook = () => {
+type IsRouteLoadingHook = () => {
   startLoading: StartLoading;
   finishLoading: FinishLoading;
   isLoading: IsLoading;
@@ -28,7 +28,7 @@ function loadingReducer(state: State, action: Action): State {
   }
 }
 
-export const useIsComponentLoading: ComponentIsLoadingHook = () => {
+export const useIsRouteLoading: IsRouteLoadingHook = () => {
   const [state, dispatch] = useReducer(loadingReducer, {});
 
   const startLoading = useCallback<StartLoading>(name => {
