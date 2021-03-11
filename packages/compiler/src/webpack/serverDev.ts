@@ -1,4 +1,5 @@
 import path from 'path';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { Configuration, DefinePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 
@@ -22,10 +23,38 @@ export const serverDevConfig: Configuration = {
   module: {
     rules: [
       {
+        test: /\.module\.scss$/,
+        use: [
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: {
+                exportOnlyLocals: true,
+                getLocalIdent: getCSSModuleLocalIdent,
+                exportLocalsConvention: 'camelCase'
+              }
+            }
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [
+          {
+            loader: require.resolve('null-loader')
+          }
+        ]
+      },
+      {
         test: /.(js|jsx|ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
             plugins: [
@@ -39,7 +68,7 @@ export const serverDevConfig: Configuration = {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
+            loader: require.resolve('url-loader'),
             options: {
               limit: 2048,
               name: 'assets/[name].[ext]',

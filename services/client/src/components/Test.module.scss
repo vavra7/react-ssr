@@ -1,0 +1,12 @@
+@use '../assets/styles/abstracts/colors';
+
+$width: 60;
+
+.test {
+  width: $width + px;
+  background: colors.$primary;
+}
+
+:export {
+  width: $width;
+}

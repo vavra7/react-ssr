@@ -53,6 +53,7 @@ class ServerApp {
           <HtmlBoilerplate
             helmetContext={helmetContext as FilledContext}
             scripts={[this.manifest['bundle.js']]}
+            styles={[this.manifest['bundle.css']]}
           >
             {reactApp}
           </HtmlBoilerplate>

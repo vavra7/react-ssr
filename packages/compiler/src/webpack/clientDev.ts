@@ -1,5 +1,7 @@
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import getCSSModuleLocalIdent from 'react-dev-utils/getCSSModuleLocalIdent';
 import { Configuration, DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 
@@ -27,10 +29,46 @@ export const clientDevConfig: Configuration = {
   module: {
     rules: [
       {
+        test: /\.module\.scss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: {
+                getLocalIdent: getCSSModuleLocalIdent,
+                exportLocalsConvention: 'camelCase'
+              }
+            }
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: require.resolve('css-loader')
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
         test: /.(js|jsx|ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
             plugins: [
@@ -45,7 +83,7 @@ export const clientDevConfig: Configuration = {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
+            loader: require.resolve('url-loader'),
             options: {
               limit: 2048,
               name: 'assets/[name].[contenthash].[ext]'
@@ -60,6 +98,7 @@ export const clientDevConfig: Configuration = {
     modules: ['src', 'node_modules']
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new HotModuleReplacementPlugin(),
     new WebpackManifestPlugin({ fileName: 'manifest.json' }) as any,
     new DefinePlugin({

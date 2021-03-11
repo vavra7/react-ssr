@@ -16,6 +16,13 @@ export class CompileBase {
     this.serverName = this.serverConfig.name || 'server';
   }
 
+  /**
+   * Removes original dist folder if some
+   */
+  public clearDistFolder(): void {
+    rimraf.sync(path.resolve(process.cwd(), 'dist'));
+  }
+
   protected get multiCompiler(): MultiCompiler {
     if (!this._multiCompiler)
       throw new ReferenceError(
@@ -48,13 +55,6 @@ export class CompileBase {
     this._multiCompiler = webpack([this.clientConfig, this.serverConfig]);
     this.addLogs(this.clientName, this.clientCompiler);
     this.addLogs(this.serverName, this.serverCompiler);
-  }
-
-  /**
-   * Removes original dist folder if some
-   */
-  public clearDistFolder(): void {
-    rimraf.sync(path.resolve(process.cwd(), 'dist'));
   }
 
   protected addLogs(name: string, compiler: Compiler): void {

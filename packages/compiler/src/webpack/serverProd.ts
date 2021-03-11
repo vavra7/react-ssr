@@ -20,10 +20,38 @@ export const serverProdConfig: Configuration = {
   module: {
     rules: [
       {
+        test: /\.module\.scss$/,
+        use: [
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: {
+                exportOnlyLocals: true,
+                localIdentName: '[hash:base64:8]',
+                exportLocalsConvention: 'camelCase'
+              }
+            }
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [
+          {
+            loader: require.resolve('null-loader')
+          }
+        ]
+      },
+      {
         test: /.(js|jsx|ts|tsx)$/,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
             plugins: [
@@ -37,7 +65,7 @@ export const serverProdConfig: Configuration = {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
+            loader: require.resolve('url-loader'),
             options: {
               limit: 2048,
               name: 'assets/[name].[contenthash].[ext]',

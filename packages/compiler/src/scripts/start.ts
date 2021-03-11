@@ -9,13 +9,43 @@ import { clientDevConfig, serverDevConfig } from '../webpack';
 @Service()
 class Start extends CompileBase {
   @Inject()
-  private webpackServer: WebpackServer;
+  protected styledLog: StyledLog;
 
   @Inject()
-  protected styledLog: StyledLog;
+  private webpackServer: WebpackServer;
 
   constructor() {
     super(clientDevConfig, serverDevConfig);
+  }
+
+  @BindThis()
+  public async run(): Promise<void> {
+    this.clearDistFolder();
+    this.createMultiCompiler();
+    const compilationPromises = this.createCompilationPromises();
+    this.webpackServer.createApp();
+    this.webpackServer.runWebpackMiddleware(this.clientConfig, this.clientCompiler);
+    this.serverCompiler.watch(
+      {
+        ignored: /node_modules/
+      },
+      (err, stats) => {
+        const _stats = stats?.toJson();
+        if (err?.stack) {
+          this.styledLog.error(err.stack);
+        } else if (stats?.hasErrors() && _stats?.errors) {
+          _stats.errors.forEach(error => {
+            if (typeof error === 'string') this.styledLog.error(error);
+            else if (typeof error === 'object') this.styledLog.error(error.stack || error.message);
+          });
+        } else if (stats?.hasWarnings() && _stats?.warnings) {
+          _stats.warnings.forEach(warning => this.styledLog.warn(warning.stack));
+        }
+      }
+    );
+    await Promise.all(compilationPromises);
+    this.webpackServer.start();
+    this.startNodemon();
   }
 
   /**
@@ -66,36 +96,6 @@ class Start extends CompileBase {
       this.webpackServer.close();
       process.exit(1);
     });
-  }
-
-  @BindThis()
-  public async run(): Promise<void> {
-    this.clearDistFolder();
-    this.createMultiCompiler();
-    const compilationPromises = this.createCompilationPromises();
-    this.webpackServer.createApp();
-    this.webpackServer.runWebpackMiddleware(this.clientConfig, this.clientCompiler);
-    this.serverCompiler.watch(
-      {
-        ignored: /node_modules/
-      },
-      (err, stats) => {
-        const _stats = stats?.toJson();
-        if (err?.stack) {
-          this.styledLog.error(err.stack);
-        } else if (stats?.hasErrors() && _stats?.errors) {
-          _stats.errors.forEach(error => {
-            if (typeof error === 'string') this.styledLog.error(error);
-            else if (typeof error === 'object') this.styledLog.error(error.stack || error.message);
-          });
-        } else if (stats?.hasWarnings() && _stats?.warnings) {
-          _stats.warnings.forEach(warning => this.styledLog.warn(warning.stack));
-        }
-      }
-    );
-    await Promise.all(compilationPromises);
-    this.webpackServer.start();
-    this.startNodemon();
   }
 }
 

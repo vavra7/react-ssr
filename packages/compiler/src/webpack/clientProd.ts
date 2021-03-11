@@ -1,3 +1,4 @@
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin } from 'webpack';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
@@ -20,10 +21,46 @@ export const clientProdConfig: Configuration = {
   module: {
     rules: [
       {
+        test: /\.module\.scss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: '[hash:base64:8]',
+                exportLocalsConvention: 'camelCase'
+              }
+            }
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          {
+            loader: require.resolve('css-loader')
+          },
+          {
+            loader: require.resolve('sass-loader')
+          }
+        ]
+      },
+      {
         test: /.(js|jsx|ts|tsx)$/i,
         exclude: /[\\/]node_modules[\\/]/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
             presets: ['@babel/preset-react', '@babel/preset-typescript'],
             plugins: [
@@ -37,7 +74,7 @@ export const clientProdConfig: Configuration = {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: 'url-loader',
+            loader: require.resolve('url-loader'),
             options: {
               limit: 2048,
               name: 'assets/[name].[contenthash].[ext]'
@@ -52,6 +89,7 @@ export const clientProdConfig: Configuration = {
     modules: ['src', 'node_modules']
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new WebpackManifestPlugin({ fileName: 'manifest.json' }) as any,
     new DefinePlugin({
       __SERVER__: false,

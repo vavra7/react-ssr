@@ -4,12 +4,14 @@ import { FilledContext } from 'react-helmet-async';
 export interface HtmlBoilerplateProps {
   children: string;
   scripts: string[];
+  styles: string[];
   helmetContext: FilledContext;
 }
 
 const HtmlBoilerplate: FC<HtmlBoilerplateProps> = ({
   children,
   scripts,
+  styles,
   helmetContext: { helmet }
 }) => {
   return (
@@ -22,6 +24,9 @@ const HtmlBoilerplate: FC<HtmlBoilerplateProps> = ({
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
         {helmet.script.toComponent()}
+        {styles.map((href, index) => (
+          <link href={href} key={index} rel="stylesheet" />
+        ))}
         {scripts.map((src, index) => (
           <script defer key={index} src={src} />
         ))}
