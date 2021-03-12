@@ -1,6 +1,8 @@
 @use './abstracts/colors';
 @use './abstracts/fonts';
 
+@use '@react-ssr/ui-components/lib/scss/main';
+
 h1 {
   color: colors.$primary;
   font-family: fonts.$primary;

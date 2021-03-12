@@ -5,8 +5,8 @@
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "tsc --watch",
-    "build": "tsc",
+    "start": "gulp start",
+    "build": "gulp build",
     "storybook": "start-storybook -p 5555",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'"
   },
@@ -15,6 +15,15 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@storybook/react": "^6.1.21"
+    "@storybook/react": "^6.1.21",
+    "@types/gulp": "^4.0.8",
+    "@types/gulp-sass": "^4.0.0",
+    "@types/gulp-typescript": "^2.13.0",
+    "css-loader": "^5.1.2",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "sass-loader": "10",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.18"
   }
 }

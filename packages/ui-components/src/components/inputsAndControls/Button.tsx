@@ -6,7 +6,11 @@ export interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({ children, type = 'button' }) => {
-  return <button type={type}>{children}</button>;
+  return (
+    <button className="test" type={type}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

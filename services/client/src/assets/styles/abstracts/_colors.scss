@@ -1,1 +1,3 @@
-$primary: gray
+@forward '@react-ssr/ui-components/lib/scss/abstracts/colors' with (
+  $primary: gray
+);
