@@ -1,1 +1,23 @@
-$primary: blue !default;
+$primary: #4285f4 !default;
+$secondary: #aa66cc !default;
+
+$danger: #ff4444 !default;
+$warning: #ffbb33 !default;
+$success: #00c851 !default;
+$info: #33b5e5 !default;
+
+$light: #fbfbfb !default;
+$neutral: #dddddd !default;
+$dark: #262626 !default;
+
+$colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'danger': $danger,
+  'warning': $warning,
+  'success': $success,
+  'info': $info,
+  'light': $light,
+  'neutral': $neutral,
+  'dark': $dark
+);

@@ -1,0 +1,29 @@
+@use '../abstracts/colors' as color;
+
+$transparencies: (
+  'transparent-1': 0.6,
+  'transparent-2': 0.4,
+  'transparent-3': 0.2
+);
+
+@function set-color($bg-color) {
+  @if (lightness($bg-color) > 65) {
+    @return color.$dark;
+  }
+  @else {
+    @return color.$light;
+  }
+}
+
+@each $color-name, $color-value in color.$colors {
+  .#{$color-name} {
+    background-color: $color-value;
+    color: set-color($color-value);
+
+    @each $transparency-name, $transparency-value in $transparencies {
+      &.#{$transparency-name} {
+        background-color: rgba($color-value, $transparency-value);
+      }
+    }
+  }
+}

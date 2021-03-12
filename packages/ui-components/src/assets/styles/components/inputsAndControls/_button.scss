@@ -1,0 +1,17 @@
+@use '../../abstracts/variables' as var;
+
+.c-btn {
+  border: none;
+  min-width: 5rem;
+  height: 2rem;
+  cursor: pointer;
+  user-select: none;
+  border-radius: var.$border-radius;
+}
+
+.c-btn {
+  &__content {
+    color: inherit;
+    font-weight: bold;
+  }
+}

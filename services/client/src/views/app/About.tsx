@@ -6,7 +6,7 @@ const About: FC = () => {
     <>
       <h1>About</h1>
 
-      <Button>My Test Button</Button>
+      <Button color="secondary">My Test Button</Button>
     </>
   );
 };

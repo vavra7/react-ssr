@@ -1,12 +1,16 @@
 import { useRoute } from '@react-ssr/router';
+import { ProgressLinear } from '@react-ssr/ui-components';
 import React, { FC } from 'react';
 
 const RouteLoader: FC = () => {
   const { loading } = useRoute();
 
-  const loader = <div style={{ height: '20px', width: '20px', background: 'red' }} />;
-
-  return <>{loading && loader}</>;
+  return (
+    <ProgressLinear
+      active={loading}
+      style={{ position: 'fixed', top: 0, left: 0, width: '100%' }}
+    />
+  );
 };
 
 export default RouteLoader;
