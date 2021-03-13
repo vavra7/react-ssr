@@ -25,9 +25,7 @@ gulp.task('move-scss', () => gulp.src(paths.get('styles')).pipe(gulp.dest('lib/s
  */
 gulp.task('compile-tsc-watch', () => {
   gulp.series('compile-tsc')();
-  gulp
-    .watch(paths.get('scripts'))
-    .on('change', file => gulp.src(file, { base: 'src' }).pipe(tsProject()).pipe(gulp.dest('lib')));
+  gulp.watch(paths.get('scripts'), gulp.series('compile-tsc'));
 });
 
 /**

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import React, { FC, ReactNode } from 'react';
 
@@ -22,7 +23,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <motion.button
-      className={`c-btn ${color} ${className}`}
+      className={classNames('c-btn', color, className)}
       onClick={onClick}
       style={style}
       type={type}

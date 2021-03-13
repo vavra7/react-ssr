@@ -1,0 +1,38 @@
+@use './spacing';
+
+$xs: 0px !default;
+$sm: 600px !default;
+$md: 960px !default;
+$lg: 1210px !default;
+$xl: 1500px !default;
+
+$sm-content-width: $sm - 40;
+$md-content-width: $md - 50;
+$lg-content-width: $lg - 60;
+$xl-content-width: $xl - 70;
+
+$breakpoints-min: (
+  'xs': $xs,
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl
+);
+
+$breakpoints-max: (
+  'xs': $sm - 1,
+  'sm': $md - 1,
+  'md': $lg - 1,
+  'lg': $xl - 1,
+  'xl': 99999px
+);
+
+$content-widths: (
+	$sm: $sm-content-width,
+	$md: $md-content-width,
+	$lg: $lg-content-width,
+	$xl: $xl-content-width
+);
+
+$grid-gutter: spacing.$base-space * 2;
+$grid-columns: 12 !default;

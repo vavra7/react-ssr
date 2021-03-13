@@ -1,0 +1,87 @@
+@use '../abstracts/grid-system';
+
+// container
+.container,
+.container-fluid {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	padding-right: (grid-system.$grid-gutter / 2);
+	padding-left: (grid-system.$grid-gutter / 2);
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.container {
+	@each $breakpoint, $content-width in grid-system.$content-widths {
+		@media (min-width: #{$breakpoint}) {
+			max-width: #{$content-width};
+		}
+	}
+}
+
+// row
+.row {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: row;
+	box-sizing: border-box;
+	margin-right: - grid-system.$grid-gutter / 2;
+	margin-left: - grid-system.$grid-gutter / 2;
+	flex-wrap: wrap;
+}
+
+// col
+[class^='col-'],
+[class*=' col-'],
+.col {
+	box-sizing: border-box;
+	padding-left: grid-system.$grid-gutter / 2;
+	padding-right: grid-system.$grid-gutter / 2;
+	flex: 0 1 auto;
+}
+
+@each $breakpoint, $width in grid-system.$breakpoints-min {
+	@media (min-width: $width) {
+		@for $i from 1 through grid-system.$grid-columns {
+			.col-#{$breakpoint}-#{$i} {
+				width: percentage($i / grid-system.$grid-columns);
+			}
+		}
+	}
+}
+
+// offsets
+@each $breakpoint, $width in grid-system.$breakpoints-min {
+	@media (min-width: $width) {
+		@for $i from 0 through grid-system.$grid-columns {
+			.col-#{$breakpoint}-offset-#{$i} {
+				margin-left: percentage($i / grid-system.$grid-columns);
+			}
+		}
+	}
+}
+
+// hide
+.hide {
+	display: none !important;
+	visibility: hidden;
+}
+
+@each $breakpoint, $width in grid-system.$breakpoints-max {
+	@media (max-width: $width) {
+		.hide-#{$breakpoint}-down {
+			display: none !important;
+			visibility: hidden;
+		}
+	}
+}
+
+@each $breakpoint, $width in grid-system.$breakpoints-min {
+	@media (min-width: $width) {
+		.hide-#{$breakpoint}-up {
+			display: none !important;
+			visibility: hidden;
+		}
+	}
+}

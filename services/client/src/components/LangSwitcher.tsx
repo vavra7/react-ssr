@@ -11,10 +11,12 @@ const LangSwitcher: FC = () => {
   };
 
   return (
-    <div>
+    <>
+      <div className="mr-3" style={{ width: '120px', display: 'inline-block' }}>
+        {`LangSwitcher: ${lang}`}
+      </div>
       <Button onClick={switchLang}>Switch</Button>
-      <span>{`LangSwitcher: ${lang}`}</span>
-    </div>
+    </>
   );
 };
 

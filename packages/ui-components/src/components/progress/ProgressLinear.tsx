@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 
@@ -23,7 +24,7 @@ const ProgressLinear: FC<ProgressLinearProps> = ({
           animate={{ opacity: 1 }}
           aria-valuemax={100}
           aria-valuemin={0}
-          className={`c-progress-linear ${active && 'c-progress-linear--active'} ${className}`}
+          className={classNames('c-progress-linear', className)}
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           key="progress-linear"

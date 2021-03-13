@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet-async';
 
 import favicon from './assets/images/favicon.png';
 import RouteLoader from './components/RouteLoader';
-import Test from './components/Test';
 
 export interface AppProps {}
 
@@ -23,8 +22,6 @@ const App: FC<AppProps> = () => {
       <RouteLoader />
 
       <div>global alerts</div>
-
-      <Test />
 
       <RouterView />
     </>
