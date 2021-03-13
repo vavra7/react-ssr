@@ -9,6 +9,7 @@ export interface ButtonProps {
   color?: Color;
   style?: Record<string, string | number>;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -16,14 +17,16 @@ const Button: FC<ButtonProps> = ({
   type = 'button',
   color = 'neutral',
   style,
-  className
+  className,
+  onClick
 }) => {
   return (
     <motion.button
       className={`c-btn ${color} ${className}`}
+      onClick={onClick}
       style={style}
       type={type}
-      whileTap={{ scale: 0.9 }}
+      whileTap={{ scale: 0.95 }}
     >
       <span className="c-btn__content">{children}</span>
     </motion.button>

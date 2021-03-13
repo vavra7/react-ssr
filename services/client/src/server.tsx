@@ -1,3 +1,4 @@
+import { I18nProvider } from '@react-ssr/i18n';
 import { RouterProvider } from '@react-ssr/router';
 import express, { Application } from 'express';
 import fs from 'fs';
@@ -41,9 +42,11 @@ class ServerApp {
 
       const reactApp = renderToString(
         <RouterProvider context={router} staticPath={req.originalUrl}>
-          <HelmetProvider context={helmetContext}>
-            <App />
-          </HelmetProvider>
+          <I18nProvider>
+            <HelmetProvider context={helmetContext}>
+              <App />
+            </HelmetProvider>
+          </I18nProvider>
         </RouterProvider>
       );
 

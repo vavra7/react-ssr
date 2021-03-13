@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import { I18nProvider } from '@react-ssr/i18n';
 import { RouterProvider } from '@react-ssr/router';
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
@@ -13,9 +14,11 @@ async function main(): Promise<void> {
   ReactDOM.hydrate(
     <StrictMode>
       <RouterProvider context={router}>
-        <HelmetProvider>
-          <App />
-        </HelmetProvider>
+        <I18nProvider>
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
+        </I18nProvider>
       </RouterProvider>
     </StrictMode>,
     document.getElementById('root')

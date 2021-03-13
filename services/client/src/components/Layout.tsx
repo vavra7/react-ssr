@@ -2,10 +2,14 @@ import { Link } from '@react-ssr/router';
 import React, { FC } from 'react';
 
 import { Route } from '../router/routes';
+import LangSwitcher from './LangSwitcher';
 
 const Layout: FC = ({ children }) => {
   return (
     <>
+      <div>
+        <LangSwitcher />
+      </div>
       <ul>
         <li>
           <Link to={{ name: Route.SignUp }}>sign up</Link>

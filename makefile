@@ -5,10 +5,12 @@ clear:
 	$(MAKE) -C packages/compiler clear
 	$(MAKE) -C packages/router clear
 	$(MAKE) -C packages/ui-components clear
+	$(MAKE) -C packages/i18n clear
 	$(MAKE) -C services/client clear
 
 build:
 	$(MAKE) -C packages/compiler build
 	$(MAKE) -C packages/router build
 	$(MAKE) -C packages/ui-components build
+	$(MAKE) -C packages/i18n build
 	$(MAKE) -C services/client build
